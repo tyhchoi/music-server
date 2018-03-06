@@ -2,13 +2,9 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 
 const getFiles = ( directory, files = '' ) => {
-  let musicDirectory = '';
-  if ( process.env.NODE_ENV === 'testing' ) {
-    musicDirectory = 'public';
-  } else {
-    musicDirectory = process.env.MUSIC_DIRECTORY;
-  }
+  const musicDirectory = process.env.NODE_ENV === 'testing' ? 'music' : process.env.MUSIC_DIRECTORY;
   const dir = path.join( musicDirectory, files );
+
   if ( directory ) {
     return fs.readdirSync( dir ).filter( file => fs.lstatSync( path.join( dir, file ) ).isDirectory() );
   }

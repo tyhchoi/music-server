@@ -7,11 +7,9 @@ const app = express();
 app.set( 'views', path.join( __dirname, 'views' ) );
 app.set( 'view engine', 'pug' );
 
-if ( process.env.NODE_ENV === 'testing' ) {
-  app.use( express.static( 'public' ) );
-} else {
-  app.use( express.static( process.env.MUSIC_DIRECTORY ) );
-}
+const musicDirectory = process.env.NODE_ENV === 'testing' ? 'music' : process.env.MUSIC_DIRECTORY;
+app.use( express.static( path.join( musicDirectory ) ) );
+app.use( express.static( path.join( __dirname, 'public' ) ) );
 
 app.use( '/', routes );
 
