@@ -1,0 +1,10 @@
+extends layout
+
+block list
+  h2= title
+  ul
+    each song in songs
+      div #{song}
+        div
+          audio(controls='' controlsList='nodownload')
+            source(src=`${song}`)

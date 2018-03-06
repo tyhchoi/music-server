@@ -1,0 +1,33 @@
+{
+  "name": "music-server",
+  "version": "1.0.0",
+  "description": "node project to stream music from a local server",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "pug": "^2.0.0-rc.4"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-strict": "^14.0.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-react": "^7.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "start:testing": "NODE_ENV=testing node server.js",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "author": "Thomas Choi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tyhchoi/music-server/issues"
+  },
+  "homepage": "https://github.com/tyhchoi/music-server#readme"
+}
