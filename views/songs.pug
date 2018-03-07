@@ -4,7 +4,8 @@ block append head
   script(src='/scripts/playlist.js')
 
 block list
-  h2 #{album}
+  - const cdName = cd === undefined ? '' : ` - ${cd}`;
+  h2 #{album} #{cdName}
   h4 by #{artist}
 
   - const first_song = `${songs[0]}`
