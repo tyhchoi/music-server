@@ -1,0 +1,48 @@
+html {
+  font-family:Calibri;
+  padding:30px;
+}
+
+body {
+  background:#d1d1d1;
+}
+
+h2, h3 {
+  color:#000;
+}
+
+ul {
+  padding:5px;
+  list-style:none;
+}
+
+a {
+  color:#a6171a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration:underline;
+}
+
+#playlist {
+  width:800px;
+  padding:5px;
+}
+
+#audio {
+  width:400px;
+}
+
+.songlist {
+  padding:5px;
+  display:block;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.links {
+  color:#000;
+}

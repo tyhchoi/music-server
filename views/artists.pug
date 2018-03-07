@@ -1,8 +1,8 @@
 extends layout
 
 block list
-  h2= title
+  h2 #{title}
   ul
     each artist in artists
-      div
+      li
         a(href=`/${artist}`) #{artist}

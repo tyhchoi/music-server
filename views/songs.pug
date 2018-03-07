@@ -1,10 +1,21 @@
 extends layout
 
+block append head
+  script(src='/scripts/playlist.js')
+
 block list
-  h2= title
-  ul
-    each song in songs
-      div #{song}
-        div
-          audio(controls='' controlsList='nodownload')
-            source(src=`${song}`)
+  h2 #{album}
+  h4 by #{artist}
+
+  - const first_song = `${songs[0]}`
+  h3 Now Playing - #{first_song}
+  audio#audio(controls='' preload='auto' controlsList='nodownload')
+    source(src=`${first_song}`)
+
+  ul#playlist
+    li.songlist.active
+      a(href=`${first_song}`) #{first_song}
+    - const rest_songs = songs.slice(1);
+    each song in rest_songs
+      li.songlist
+        a(href=`${song}`) #{song}

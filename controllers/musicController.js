@@ -19,13 +19,11 @@ exports.getArtists = ( req, res ) => {
 exports.getAlbums = ( req, res ) => {
   const { artist } = req.params;
   const albums = getFiles( true, artist );
-  res.render( 'albums', { title: `${artist}`, artist, albums } );
+  res.render( 'albums', { artist, albums } );
 };
 
 exports.getSongs = ( req, res ) => {
   const { artist, album } = req.params;
   const songs = getFiles( false, path.join( artist, album ) );
-  res.render( 'songs', {
-    title: `${artist} - ${album}`, artist, album, songs
-  } );
+  res.render( 'songs', { artist, album, songs } );
 };
