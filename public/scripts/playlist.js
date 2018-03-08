@@ -47,6 +47,7 @@ $( document ).ready( () => {
   } );
 
   $( this ).keydown( e => {
+    e.preventDefault();
     switch ( e.which ) {
       case 32:
         if ( audio.paused ) {

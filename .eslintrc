@@ -40,7 +40,11 @@
       ]
     },
     "env": {
+      "browser": true,
       "jquery": true,
       "mocha": true
-    }
+    },
+    "plugins": [
+      "pug"
+    ]
 }
