@@ -1,5 +1,4 @@
 module.exports = ( err, req, res, next ) => {
-  console.log( err );
   if ( err.code === 'ENOENT' ) {
     const fullPath = req.url.split( '/' );
     let [ file ] = fullPath.splice( -1 );

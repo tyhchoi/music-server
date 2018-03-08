@@ -1,4 +1,4 @@
-const proxyquire = require( 'proxyquire' );
+const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
 describe( 'musicController', () => {
   const musicFilesStub = {};
