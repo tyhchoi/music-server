@@ -1,5 +1,4 @@
 const proxyquire = require( 'proxyquire' );
-const { expect } = require( 'chai' );
 
 describe( 'musicController', () => {
   const fsStub = {};
