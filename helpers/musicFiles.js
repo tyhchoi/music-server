@@ -2,7 +2,6 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 
 exports.readDir = ( checkDir, subDirectory = '' ) => {
-  console.log( 'asdf' );
   const musicDirectory = process.env.NODE_ENV === 'test' ? 'music' : process.env.MUSIC_DIRECTORY;
   const joinedPath = path.join( musicDirectory, subDirectory );
   const dir = fs.readdirSync( joinedPath );
