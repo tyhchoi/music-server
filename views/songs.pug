@@ -8,10 +8,12 @@ block list
   h2 #{album} #{cdName}
   h4 by #{artist}
 
-  - const first_song = `${songs[0]}`
+  -
+    const first_song = `${songs[0]}`
+    const path = cd === undefined ? `music/${artist}/${album}` : `music/${artist}/${album}/${cd}`
   h3 Now Playing - #{first_song}
   audio#audio(controls='' preload='auto' controlsList='nodownload')
-    source(src=`${first_song}`)
+    source(src=`/${path}/${first_song}`)
 
   ul#playlist
     li.songlist.active
@@ -19,4 +21,4 @@ block list
     - const rest_songs = songs.slice(1)
     each song in rest_songs
       li.songlist
-        a(href=`${song}`) #{song}
+        a(href=`/${path}/${song}`) #{song}
