@@ -1,6 +1,7 @@
 const express = require( 'express' );
 const path = require( 'path' );
 const routes = require( './routes/index' );
+const errorHandler = require( './helpers/errorHandler' );
 
 const app = express();
 
@@ -12,5 +13,7 @@ app.use( express.static( musicDirectory ) );
 app.use( express.static( path.join( __dirname, 'public' ) ) );
 
 app.use( '/', routes );
+
+app.use( errorHandler );
 
 module.exports = app;
