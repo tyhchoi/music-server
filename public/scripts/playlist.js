@@ -49,6 +49,7 @@ $( document ).ready( () => {
   $( this ).keydown( e => {
     e.preventDefault();
     switch ( e.which ) {
+      // spacebar
       case 32:
         if ( audio.paused ) {
           audio.play();
@@ -56,6 +57,7 @@ $( document ).ready( () => {
           audio.pause();
         }
         break;
+      // right arrow key
       case 37:
         if ( !e.shiftKey ) {
           audio.currentTime -= 5;
@@ -65,6 +67,7 @@ $( document ).ready( () => {
           audio.currentTime = 0;
         }
         break;
+      // left arrow key
       case 39:
         if ( !e.shiftKey ) {
           audio.currentTime += 5;
@@ -72,11 +75,21 @@ $( document ).ready( () => {
           [ playlistTrack, playlistIndex ] = nextTrack( playlistIndex, playlistLength, audio, playlist );
         }
         break;
+      // up arrow key
       case 38:
         audio.volume = ( 1 - audio.volume ) < 0.05 ? 1 : audio.volume + 0.05;
         break;
+      // down arrow key
       case 40:
         audio.volume = audio.volume < 0.05 ? 0 : audio.volume - 0.05;
+        break;
+      // l key
+      case 76:
+        audio.loop = !audio.loop;
+        break;
+      // m key
+      case 77:
+        audio.muted = !audio.muted;
         break;
       default:
         break;
