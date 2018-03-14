@@ -1,14 +1,8 @@
 html {
   font-family:Calibri;
   padding:30px;
-}
-
-body {
   background:#d1d1d1;
-}
-
-h2, h3 {
-  color:#000;
+  color: #000000;
 }
 
 ul {
