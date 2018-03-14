@@ -1,4 +1,4 @@
-const handleError = require( '../../helpers/errorHandler' );
+const handleError = require( '../../middleware/errorHandler' );
 
 describe( 'errorHandler', () => {
   describe( 'ENOENT error code', () => {

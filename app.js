@@ -1,7 +1,7 @@
 const express = require( 'express' );
 const path = require( 'path' );
 const routes = require( './routes/index' );
-const errorHandler = require( './helpers/errorHandler' );
+const errorHandler = require( './middleware/errorHandler' );
 
 const app = express();
 

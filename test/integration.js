@@ -32,6 +32,14 @@ describe( 'Integration test for routes', () => {
         .expect( 200 )
         .end( done );
     } );
+
+    it( 'should successfully get cds from album2 by artist', done => {
+      request
+        .get( '/artist/album2' )
+        .expect( 'Content-Type', /html/ )
+        .expect( 200 )
+        .end( done );
+    } );
   } );
 
   describe( 'GET /:artist/:album/:cd', () => {
