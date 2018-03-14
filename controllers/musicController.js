@@ -20,18 +20,16 @@ exports.renderCDs = ( req, res, next ) => {
 };
 
 exports.renderSongs = ( req, res ) => {
-  const { artist, album } = req.params;
+  const { artist, album, cd } = req.params;
   const { songs } = res.locals;
-  if ( songs ) {
-    res.render( 'songs', { artist, album, songs } );
-  } else {
-    const { cd } = req.params;
-    const { cdSongs } = res.locals.cdSongs;
+  if ( cd ) {
     res.render( 'songs', {
       artist,
       album,
       cd,
-      songs: cdSongs
+      songs
     } );
+  } else {
+    res.render( 'songs', { artist, album, songs } );
   }
 };
