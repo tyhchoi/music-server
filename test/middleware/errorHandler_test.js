@@ -2,7 +2,7 @@ const handleError = require( '../../middleware/errorHandler' );
 
 describe( 'errorHandler', () => {
   describe( 'ENOENT error code', () => {
-    it( 'should return render the error view and pass the data when there is an error', () => {
+    it( 'should render the error view and pass the data when there is an error', () => {
       const err = {
         code: 'ENOENT'
       };
@@ -25,6 +25,13 @@ describe( 'errorHandler', () => {
 
       handleError( err, req, res, next );
       req.url = 'one/two/three/';
+      handleError( err, req, res, next );
+
+      req.url = 'one';
+      res.render = ( view, data ) => {
+        expect( view ).to.eql( 'error' );
+        expect( data ).to.eql( { path: '/', file: 'one', code: 404 } );
+      };
       handleError( err, req, res, next );
     } );
 

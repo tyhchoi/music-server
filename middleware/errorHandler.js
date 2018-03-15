@@ -5,7 +5,11 @@ module.exports = ( err, req, res, next ) => {
     if ( file === '' ) {
       [ file ] = fullPath.splice( -1 );
     }
-    const path = fullPath.join( '/' );
+    let path = fullPath.join( '/' );
+    if ( path === '' ) {
+      path = '/';
+    }
+
     res.status( 404 );
     res.render( 'error', { path, file, code: 404 } );
   } else {
