@@ -15,11 +15,23 @@ exports.getMetadata = async ( req, res, next ) => {
 
   const metadata = await mm.parseFile( joinedPath, { skipCovers: true } )
     .then( data => data.common )
-    .catch( console.error );
+    .catch( err => next( err ) );
+
+  const artistID = metadata.musicbrainz_artistid;
+  const albumID = metadata.musicbrainz_albumid;
+
+  if ( albumID !== undefined && artistID !== undefined ) {
+    res.locals.musicbrainz = {
+      artistID,
+      albumID
+    };
+  }
 
   res.locals.metadata = {
     artist: metadata.artist,
-    album: metadata.album
+    album: metadata.album,
+    date: metadata.date
   };
+
   next();
 };
