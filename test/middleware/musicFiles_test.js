@@ -32,7 +32,7 @@ describe( 'musicFiles', () => {
     it( 'should get the cds and call next', () => {
       req.params = { artist: 'artist', album: 'album2' };
       const next = () => {
-        expect( res.locals.cds ).to.eql( [ 'cd1' ] );
+        expect( res.locals.cds ).to.eql( [ 'cd1', 'cd2' ] );
       };
       musicFiles.isCD( req, res, next );
     } );

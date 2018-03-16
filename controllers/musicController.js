@@ -22,14 +22,17 @@ exports.renderCDs = ( req, res, next ) => {
 exports.renderSongs = ( req, res ) => {
   const { artist, album, cd } = req.params;
   const { songs } = res.locals;
+
+  const mbartist = res.locals.musicbrainz.artist;
+  const mbalbum = res.locals.musicbrainz.album;
+  const { date } = res.locals.musicbrainz;
+
+  const values = {
+    artist, album, songs, mbartist, mbalbum, date
+  };
+
   if ( cd ) {
-    res.render( 'songs', {
-      artist,
-      album,
-      cd,
-      songs
-    } );
-  } else {
-    res.render( 'songs', { artist, album, songs } );
+    values.cd = cd;
   }
+  res.render( 'songs', values );
 };
