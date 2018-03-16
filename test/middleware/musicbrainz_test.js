@@ -104,4 +104,68 @@ describe( 'musicbrainz', () => {
       musicbrainz.getAlbumData( req, res, next );
     } );
   } );
+
+  describe( '.getCoverArt()', () => {
+    const req = {};
+    const res = {
+      locals: {}
+    };
+    const returned = {
+      image: '1234',
+      contentType: 'content'
+    };
+
+    class coverartStub {
+      constructor( string ) {
+        this.string = string;
+      }
+
+      release( string, object, callback ) {
+        this.string = string;
+        this.object = object;
+        callback( null, returned );
+      }
+    }
+
+    const coverart = proxyquire( '../../middleware/musicbrainz', { coverart: coverartStub } );
+
+    beforeEach( () => {
+      res.locals.musicbrainz = { albumID: 'album-id' };
+      res.locals.coverart = {};
+    } );
+
+    it( 'should return the coverart data', () => {
+      const expected = {
+        image: Buffer.from( '1234', 'binary' ).toString( 'base64' ),
+        contentType: 'content'
+      };
+
+      const next = () => {
+        expect( res.locals.coverart ).to.eql( expected );
+      };
+
+      coverart.getCoverArt( req, res, next );
+    } );
+
+    it( 'should use the default image if albumID is not given', () => {
+      res.locals.musicbrainz = {};
+      const next = () => {
+        expect( res.locals.coverart ).to.eql( { image: '/images/default.png' } );
+      };
+
+      coverart.getCoverArt( req, res, next );
+    } );
+
+    it( 'should use the default image if coverart was not returned', () => {
+      coverartStub.prototype.release = ( string, object, callback ) => {
+        callback( { statusCode: 404 }, null );
+      };
+
+      const next = () => {
+        expect( res.locals.coverart ).to.eql( { image: '/images/default.png' } );
+      };
+
+      coverart.getCoverArt( req, res, next );
+    } );
+  } );
 } );

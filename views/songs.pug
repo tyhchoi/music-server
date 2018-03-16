@@ -22,3 +22,7 @@ block list
     each song in rest_songs
       li.songlist
         a(href=`/${path}/${song}`) #{song}
+
+  - const imageSrc = contentType === undefined ? image : `data:${contentType};base64,${image}`
+  div #{date}
+    img(src=`${imageSrc}`)

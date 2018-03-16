@@ -15,6 +15,7 @@ router.get(
   musicFiles.getSongs,
   metadata.getMetadata,
   musicbrainz.getAlbumData,
+  musicbrainz.getCoverArt,
   musicController.renderSongs
 );
 router.get(
@@ -22,6 +23,7 @@ router.get(
   musicFiles.getSongs,
   metadata.getMetadata,
   musicbrainz.getAlbumData,
+  musicbrainz.getCoverArt,
   musicController.renderSongs
 );
 
