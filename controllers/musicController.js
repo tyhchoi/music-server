@@ -1,9 +1,3 @@
-exports.renderAlbums = ( req, res ) => {
-  const { artist } = req.params;
-  const { albums } = res.locals;
-  res.render( 'albums', { artist, albums } );
-};
-
 exports.renderCDs = ( req, res, next ) => {
   const { artist, album } = req.params;
   const { cds } = res.locals;

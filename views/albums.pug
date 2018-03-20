@@ -1,8 +1,8 @@
 extends layout
 
 block list
-  h2 #{artist}
+  h2 #{artistName}
   ul
-    each album in albums
+    each album, index in albums
       li
-        a(href=`/${artist}/${album}`) #{album}
+        a(href=`/${artist}/${album}`) #{albumNames[index]}

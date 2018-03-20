@@ -21,6 +21,27 @@ exports.getArtists = async ( req, res, next ) => {
   next();
 };
 
+exports.getArtist = async ( req, res, next ) => {
+  const { client } = req.app.locals;
+  const { artist } = req.params;
+
+  const hget = promisify( client.hget ).bind( client );
+
+  const artistName = await hget( 'artists', artist )
+    .then( data => {
+      if ( data === null ) {
+        return artist;
+      }
+
+      return data;
+    } )
+    .catch( err => err );
+
+  res.locals.artistName = artistName;
+
+  next();
+};
+
 exports.setArtist = ( req, res, next ) => {
   const { client } = req.app.locals;
   const { artist } = req.params;
