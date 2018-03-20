@@ -2,11 +2,12 @@ const { promisify } = require( 'util' );
 
 exports.getAlbums = async ( req, res, next ) => {
   const { client } = req.app.locals;
+  const { artist } = req.params;
   const { albums } = res.locals;
 
   const hgetall = promisify( client.hgetall ).bind( client );
 
-  const albumNames = await hgetall( 'albums' )
+  const albumNames = await hgetall( artist )
     .then( data => albums.map( album => {
       if ( data !== null && data[album] !== undefined ) {
         return data[album];
@@ -23,12 +24,12 @@ exports.getAlbums = async ( req, res, next ) => {
 
 exports.setAlbum = ( req, res, next ) => {
   const { client } = req.app.locals;
-  const { album } = req.params;
+  const { artist, album } = req.params;
   const mbalbum = res.locals.musicbrainz.album;
 
-  client.hexists( 'albums', album, ( err, data ) => {
+  client.hexists( artist, album, ( err, data ) => {
     if ( data === 0 ) {
-      client.hset( 'albums', album, mbalbum );
+      client.hset( artist, album, mbalbum );
     }
   } );
 
@@ -38,5 +39,10 @@ exports.setAlbum = ( req, res, next ) => {
 exports.renderAlbums = ( req, res ) => {
   const { artist } = req.params;
   const { albums, albumNames, artistName } = res.locals;
-  res.render( 'albums', { artist, albums, albumNames, artistName } );
+  res.render( 'albums', {
+    artist,
+    albums,
+    albumNames,
+    artistName
+  } );
 };
