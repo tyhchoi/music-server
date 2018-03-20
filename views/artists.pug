@@ -3,6 +3,6 @@ extends layout
 block list
   h2 Artists
   ul
-    each artist in artists
+    each artist, index in artists
       li
-        a(href=`/${artist}`) #{artist}
+        a(href=`/${artist}`) #{artistNames[index]}

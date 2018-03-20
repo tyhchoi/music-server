@@ -1,6 +1,6 @@
 exports.renderArtists = ( req, res ) => {
-  const { artists } = res.locals;
-  res.render( 'artists', { artists } );
+  const { artists, artistNames } = res.locals;
+  res.render( 'artists', { artists, artistNames } );
 };
 
 exports.renderAlbums = ( req, res ) => {
