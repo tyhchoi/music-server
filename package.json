@@ -7,21 +7,21 @@
     "coverart": "0.0.1",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
-    "music-metadata": "^0.9.8",
+    "music-metadata": "^0.9.11",
     "nodebrainz": "^2.1.1",
-    "pug": "^2.0.0-rc.4",
+    "pug": "^2.0.2",
     "redis": "^2.8.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.17.0",
+    "eslint": "^4.19.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-pug": "^1.1.1",
     "eslint-plugin-react": "^7.6.1",
     "mocha": "^5.0.4",
-    "proxyquire": "^2.0.0",
+    "proxyquire": "^2.0.1",
     "supertest": "^3.0.0"
   },
   "scripts": {
