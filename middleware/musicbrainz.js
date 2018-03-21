@@ -1,7 +1,8 @@
+const { promisify } = require( 'util' );
 const NB = require( 'nodebrainz' );
 const CA = require( 'coverart' );
 
-const userAgent = 'music-server/1.0.0 ( tyhchoi@gmail.com )';
+const userAgent = 'music-server/1.0.0 ( https://github.com/tyhchoi/music-server )';
 const nb = new NB( { userAgent } );
 const ca = new CA( { userAgent } );
 
@@ -9,17 +10,12 @@ exports.getAlbumData = async ( req, res, next ) => {
   const { artist, album, date } = res.locals.metadata;
 
   if ( res.locals.musicbrainz === undefined ) {
-    const promise = new Promise( ( resolve, reject ) => {
-      nb.search( 'release', { artist, release: album, status: 'Official' }, ( err, response ) => {
-        if ( err ) {
-          reject( err );
-        } else {
-          resolve( response );
-        }
-      } );
-    } );
+    const search = promisify( nb.search ).bind( nb );
 
-    const returnedData = await promise.then( data => data.releases[0] ).catch( err => next( err ) );
+    const returnedData = await search( 'release', { artist, release: album, status: 'Official' } )
+      .then( data => data.releases[0] )
+      .catch( err => next( err ) );
+
     if ( returnedData === undefined ) {
       res.locals.musicbrainz = {
         artist,
@@ -51,17 +47,11 @@ exports.getCoverArt = async ( req, res, next ) => {
   };
 
   if ( albumID !== undefined ) {
-    const promise = new Promise( ( resolve, reject ) => {
-      ca.release( albumID, { piece: 'front' }, ( err, response ) => {
-        if ( err ) {
-          reject( err );
-        } else {
-          resolve( response );
-        }
-      } );
-    } );
+    const release = promisify( ca.release ).bind( ca );
 
-    const returnedData = await promise.then( data => data ).catch( err => err );
+    const returnedData = await release( albumID, { piece: 'front' } )
+      .then( data => data )
+      .catch( err => err );
 
     if ( returnedData.statusCode !== 404 ) {
       res.locals.coverart = {
