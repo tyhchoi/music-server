@@ -17,14 +17,10 @@ exports.getMetadata = async ( req, res, next ) => {
     .then( data => data.common )
     .catch( err => next( err ) );
 
-  const artistID = metadata.musicbrainz_artistid;
   const albumID = metadata.musicbrainz_albumid;
 
-  if ( albumID !== undefined && artistID !== undefined ) {
-    res.locals.musicbrainz = {
-      artistID,
-      albumID
-    };
+  if ( albumID !== undefined ) {
+    res.locals.musicbrainz = { albumID };
   }
 
   res.locals.metadata = {

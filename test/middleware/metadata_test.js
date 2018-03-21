@@ -27,14 +27,13 @@ describe( 'metadata', () => {
     } );
 
     it( 'should get the musicbrainz info when it is provided', () => {
-      returned.common.musicbrainz_artistid = '1234';
-      returned.common.musicbrainz_albumid = '5678';
+      returned.common.musicbrainz_albumid = '1234';
 
       metadataStub.parseFile = () => Promise.resolve( returned );
 
       const next = () => {
         expect( res.locals.metadata ).to.eql( { artist: 'artist1', album: 'album1', date: 'date' } );
-        expect( res.locals.musicbrainz ).to.eql( { artistID: '1234', albumID: '5678' } );
+        expect( res.locals.musicbrainz ).to.eql( { albumID: '1234' } );
       };
 
       metadata.getMetadata( req, res, next );

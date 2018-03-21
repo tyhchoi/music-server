@@ -3,7 +3,6 @@ const songController = require( '../../controllers/songController' );
 describe( 'songController', () => {
   const artist = 'artist';
   const album = 'album';
-  const cd = 'cd';
   const songs = [ 'song1', 'song2' ];
 
   const musicbrainz = { artist: 'mbartist', album: 'mbalbum', date: 'date' };
@@ -34,6 +33,7 @@ describe( 'songController', () => {
     } );
 
     it( 'should call render and pass the data if cd is there as well', () => {
+      const cd = 'cd';
       req.params.cd = cd;
       expected.cd = cd;
       res.render = ( view, data ) => {

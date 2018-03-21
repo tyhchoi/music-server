@@ -36,8 +36,7 @@ describe( 'musicbrainz', () => {
         date: 'musicbrainz-date',
         'artist-credit': [ {
           artist: {
-            name: 'musicbrainz-artist',
-            id: 'artist-id'
+            name: 'musicbrainz-artist'
           }
         }
         ]
@@ -47,7 +46,6 @@ describe( 'musicbrainz', () => {
     it( 'should return the musicbrainz data', () => {
       const expected = {
         artist: 'musicbrainz-artist',
-        artistID: 'artist-id',
         album: 'musicbrainz-album',
         albumID: 'album-id',
         date: 'musicbrainz-date'
@@ -60,15 +58,14 @@ describe( 'musicbrainz', () => {
       musicbrainz.getAlbumData( req, res, next );
     } );
 
-    it( 'should skip the search if musicbrainz ids are already provided', () => {
+    it( 'should skip the search if musicbrainz id is already provided', () => {
       const expected = {
         artist: 'metadata-artist',
-        artistID: 'artist-id',
         album: 'metadata-album',
         albumID: 'album-id',
         date: 'metadata-date'
       };
-      res.locals.musicbrainz = { artistID: 'artist-id', albumID: 'album-id' };
+      res.locals.musicbrainz = { albumID: 'album-id' };
 
       const next = () => {
         expect( res.locals.musicbrainz ).to.eql( expected );

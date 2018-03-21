@@ -7,34 +7,25 @@ const nb = new NB( { userAgent } );
 const ca = new CA( { userAgent } );
 
 exports.getAlbumData = async ( req, res, next ) => {
-  const { artist, album, date } = res.locals.metadata;
+  const { artist, album } = res.locals.metadata;
 
-  if ( res.locals.musicbrainz === undefined ) {
+  res.locals.musicbrainz = Object.assign( {}, res.locals.musicbrainz, res.locals.metadata );
+
+  if ( res.locals.musicbrainz.albumID === undefined ) {
     const search = promisify( nb.search ).bind( nb );
 
     const returnedData = await search( 'release', { artist, release: album, status: 'Official' } )
       .then( data => data.releases[0] )
       .catch( err => next( err ) );
 
-    if ( returnedData === undefined ) {
-      res.locals.musicbrainz = {
-        artist,
-        album,
-        date
-      };
-    } else {
+    if ( returnedData !== undefined ) {
       res.locals.musicbrainz = {
         artist: returnedData['artist-credit'][0].artist.name,
-        artistID: returnedData['artist-credit'][0].artist.id,
         album: returnedData.title,
         albumID: returnedData.id,
         date: returnedData.date
       };
     }
-  } else {
-    res.locals.musicbrainz.artist = artist;
-    res.locals.musicbrainz.album = album;
-    res.locals.musicbrainz.date = date;
   }
 
   next();
