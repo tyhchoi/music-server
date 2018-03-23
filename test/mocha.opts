@@ -1,2 +1,2 @@
---require helper
+--require ./test/helper
 --slow 5000
