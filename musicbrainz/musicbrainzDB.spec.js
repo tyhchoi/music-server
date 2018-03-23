@@ -21,7 +21,7 @@ describe( 'musicbrainzDB', () => {
       expect( mbdata ).to.eql( expected );
     } );
 
-    it( 'should return the same name if it is not in the hash', async () => {
+    it( 'should return null if it is not in the hash', async () => {
       client.hget = ( hash, key, callback ) => {
         callback( null, null );
       };

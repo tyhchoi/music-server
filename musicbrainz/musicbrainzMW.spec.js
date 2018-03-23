@@ -23,7 +23,7 @@ describe( 'musicbrainzMW', () => {
         mbMW.getMusicbrainzData( req, res, next );
       } );
 
-      it( 'should get the musicbrainz data', () => {
+      it( 'should get the musicbrainz data and set gotData to true', () => {
         mbDBStub.hget = () => output;
 
         const next = () => {
@@ -98,7 +98,7 @@ describe( 'musicbrainzMW', () => {
         mbMW.getAlbumData( req, res, next );
       } );
 
-      it( 'should skip the search if musicbrainz id is already provided', () => {
+      it( 'should skip the search if musicbrainz id already exists', () => {
         res.locals.musicbrainz = { albumID: 'albumID' };
 
         const next = () => {

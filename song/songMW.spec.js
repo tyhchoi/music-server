@@ -32,7 +32,7 @@ describe( 'songMW', () => {
       songMW.renderSongs( req, res );
     } );
 
-    it( 'should call render and pass the data if cd is there as well', () => {
+    it( 'should call render and pass the data if cd is there', () => {
       const cd = 'cd';
       req.params.cd = cd;
       expected.cd = cd;

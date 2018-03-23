@@ -37,7 +37,7 @@ describe( 'musicFiles', () => {
       musicFiles.isCD( req, res, next );
     } );
 
-    it( 'should get nothing and call next', () => {
+    it( 'should call next when there are music files', () => {
       req.params = { artist: 'artist', album: 'album1' };
       const next = () => {
         expect( res.locals ).to.eql( {} );

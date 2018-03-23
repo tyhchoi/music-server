@@ -23,7 +23,7 @@ describe( 'artistDB', () => {
       expect( artistNames ).to.eql( [ 'artistName1', 'artistName2' ] );
     } );
 
-    it( 'should get the names but if it does not exist, return old name', async () => {
+    it( 'should get the new artist names, but if it doesnt exist, return the same names', async () => {
       client.hgetall = ( hash, callback ) => {
         callback( null, { artist1: 'artistName1' } );
       };

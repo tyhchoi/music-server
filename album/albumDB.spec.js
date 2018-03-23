@@ -20,7 +20,7 @@ describe( 'albumDB', () => {
       expect( albumNames ).to.eql( [ 'albumName1', 'albumName2' ] );
     } );
 
-    it( 'should get the names but if it does not exist, return old name', async () => {
+    it( 'should get the new album names, but if it doesnt exist, return the same names', async () => {
       client.hgetall = ( hash, callback ) => {
         callback( null, { album1: 'albumName1' } );
       };
