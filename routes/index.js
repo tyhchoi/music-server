@@ -6,6 +6,7 @@ const artistController = require( '../controllers/artistController' );
 const albumController = require( '../controllers/albumController' );
 const cdController = require( '../controllers/cdController' );
 const songController = require( '../controllers/songController' );
+const mbController = require( '../controllers/musicbrainzController' );
 
 const router = express.Router();
 
@@ -27,21 +28,25 @@ router.get(
   musicFiles.isCD,
   cdController.renderCDs,
   musicFiles.getSongs,
+  mbController.getMusicbrainzData,
   metadata.getMetadata,
   musicbrainz.getAlbumData,
   musicbrainz.getCoverArt,
   artistController.setArtist,
   albumController.setAlbum,
+  mbController.setMusicbrainzData,
   songController.renderSongs
 );
 router.get(
   '/:artist/:album/:cd',
   musicFiles.getSongs,
+  mbController.getMusicbrainzData,
   metadata.getMetadata,
   musicbrainz.getAlbumData,
   musicbrainz.getCoverArt,
   artistController.setArtist,
   albumController.setAlbum,
+  mbController.setMusicbrainzData,
   songController.renderSongs
 );
 
