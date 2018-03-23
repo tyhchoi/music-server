@@ -1,7 +1,6 @@
 const express = require( 'express' );
 const musicFiles = require( '../middleware/musicFiles' );
 const metadata = require( '../middleware/metadata' );
-const musicbrainz = require( '../middleware/musicbrainz' );
 const artistMW = require( '../artist/artistMW' );
 const albumMW = require( '../album/albumMW' );
 const cdMW = require( '../cd/cdMW' );
@@ -30,8 +29,8 @@ router.get(
   musicFiles.getSongs,
   mbMW.getMusicbrainzData,
   metadata.getMetadata,
-  musicbrainz.getAlbumData,
-  musicbrainz.getCoverArt,
+  mbMW.getAlbumData,
+  mbMW.getCoverArt,
   artistMW.setArtist,
   albumMW.setAlbum,
   mbMW.setMusicbrainzData,
@@ -42,8 +41,8 @@ router.get(
   musicFiles.getSongs,
   mbMW.getMusicbrainzData,
   metadata.getMetadata,
-  musicbrainz.getAlbumData,
-  musicbrainz.getCoverArt,
+  mbMW.getAlbumData,
+  mbMW.getCoverArt,
   artistMW.setArtist,
   albumMW.setAlbum,
   mbMW.setMusicbrainzData,

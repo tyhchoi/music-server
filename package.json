@@ -29,7 +29,7 @@
     "lint:fix": "eslint . --fix",
     "start": "NODE_ENV=prod node server.js",
     "test": "NODE_ENV=test mocha --recursive ./*/*.spec.js ./test --opts ./test/mocha.opts",
-    "test:watch": "NODE_ENV=test mocha --recursive --watch ./*/*.spec.js ./test/helper.js --opts ./test/mocha.opts"
+    "test:watch": "NODE_ENV=test mocha --recursive --watch ./*/*.spec.js ./test/middleware ./test/helper.js --opts ./test/mocha.opts"
   },
   "author": "Thomas Choi",
   "license": "ISC",

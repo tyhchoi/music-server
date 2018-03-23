@@ -1,50 +1,157 @@
 const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
 describe( 'musicbrainzMW', () => {
-  const mbDBStub = {};
-  const mbMW = proxyquire( './musicbrainzMW', { './musicbrainzDB': mbDBStub } );
+  context( 'Database Calls', () => {
+    const mbDBStub = {};
+    const mbMW = proxyquire( './musicbrainzMW', { './musicbrainzDB': mbDBStub } );
 
-  const req = { app: { locals: { client: {} } }, params: { album: 'album' } };
-  const res = { locals: {} };
+    const req = { app: { locals: { client: {} } }, params: { album: 'album' } };
+    const res = { locals: {} };
 
-  const musicbrainz = { artist: 'artist', album: 'album', date: 'date' };
-  const coverart = { image: 'image' };
-  const output = Object.assign( {}, musicbrainz, coverart );
+    const musicbrainz = { artist: 'artist', album: 'album', date: 'date' };
+    const coverart = { image: 'image' };
+    const output = Object.assign( {}, musicbrainz, coverart );
 
-  describe( '.getMusicbrainzData()', () => {
-    it( 'should set gotData to false when null is returned', () => {
-      mbDBStub.hget = () => null;
+    describe( '.getMusicbrainzData()', () => {
+      it( 'should set gotData to false when null is returned', () => {
+        mbDBStub.hget = () => null;
 
-      const next = () => {
-        expect( res.locals.gotData ).to.eql( false );
-      };
+        const next = () => {
+          expect( res.locals.gotData ).to.eql( false );
+        };
 
-      mbMW.getMusicbrainzData( req, res, next );
+        mbMW.getMusicbrainzData( req, res, next );
+      } );
+
+      it( 'should get the musicbrainz data', () => {
+        mbDBStub.hget = () => output;
+
+        const next = () => {
+          expect( res.locals.musicbrainz ).to.eql( musicbrainz );
+          expect( res.locals.coverart ).to.eql( coverart );
+          expect( res.locals.gotData ).to.eql( true );
+        };
+
+        mbMW.getMusicbrainzData( req, res, next );
+      } );
     } );
 
-    it( 'should get the musicbrainz data', () => {
-      mbDBStub.hget = () => output;
+    describe( '.setMusicbrainzData()', () => {
+      it( 'should set the musicbrainz data', () => {
+        let count = 0;
+        mbDBStub.hset = () => count++;
 
-      const next = () => {
-        expect( res.locals.musicbrainz ).to.eql( musicbrainz );
-        expect( res.locals.coverart ).to.eql( coverart );
-        expect( res.locals.gotData ).to.eql( true );
-      };
+        const next = () => {
+          expect( count ).to.eql( 1 );
+        };
 
-      mbMW.getMusicbrainzData( req, res, next );
+        mbMW.setMusicbrainzData( req, res, next );
+      } );
     } );
   } );
 
-  describe( '.setMusicbrainzData()', () => {
-    it( 'should set the musicbrainz data', () => {
-      let count = 0;
-      mbDBStub.hset = () => count++;
+  context( 'API Calls', () => {
+    const nbExpected = {
+      artist: 'artist',
+      album: 'album',
+      albumID: 'albumID',
+      date: 'date'
+    };
 
-      const next = () => {
-        expect( count ).to.eql( 1 );
+    const caExpected = {
+      image: Buffer.from( '1234', 'binary' ).toString( 'base64' ),
+      contentType: 'contentType'
+    };
+
+    const mbAPIStub = {
+      search() {
+        return nbExpected;
+      },
+      release() {
+        return caExpected;
+      }
+    };
+
+    const mbMW = proxyquire( './musicbrainzMW', { './musicbrainzAPI': mbAPIStub } );
+
+    describe( '.getAlbumData()', () => {
+      const req = {};
+      const res = {
+        locals: {
+          metadata: {
+            artist: 'artist',
+            album: 'album',
+            date: 'date'
+          }
+        }
       };
 
-      mbMW.setMusicbrainzData( req, res, next );
+      beforeEach( () => {
+        res.locals.musicbrainz = undefined;
+      } );
+
+      it( 'should return the musicbrainz data', () => {
+        const next = () => {
+          expect( res.locals.musicbrainz ).to.eql( nbExpected );
+        };
+
+        mbMW.getAlbumData( req, res, next );
+      } );
+
+      it( 'should skip the search if musicbrainz id is already provided', () => {
+        res.locals.musicbrainz = { albumID: 'albumID' };
+
+        const next = () => {
+          expect( res.locals.musicbrainz ).to.eql( nbExpected );
+        };
+
+        mbMW.getAlbumData( req, res, next );
+      } );
+
+      it( 'should use metadata values if the search returns null', () => {
+        const nbExpectedNull = {
+          artist: 'artist',
+          album: 'album',
+          date: 'date'
+        };
+
+        mbAPIStub.search = () => nbExpectedNull;
+
+        const next = () => {
+          expect( res.locals.musicbrainz ).to.eql( nbExpectedNull );
+        };
+
+        mbMW.getAlbumData( req, res, next );
+      } );
+    } );
+
+    describe( '.getCoverArt()', () => {
+      const req = {};
+      const res = {
+        locals: { albumID: 'albumID' }
+      };
+
+      beforeEach( () => {
+        res.locals.coverart = {};
+      } );
+
+      it( 'should return the coverart data', () => {
+        const next = () => {
+          expect( res.locals.coverart ).to.eql( caExpected );
+        };
+
+        mbMW.getCoverArt( req, res, next );
+      } );
+
+      it( 'should use the default image if albumID is not given', () => {
+        res.locals.musicbrainz = {};
+
+        const next = () => {
+          expect( res.locals.coverart ).to.eql( { image: '/images/default.png' } );
+        };
+
+        mbMW.getCoverArt( req, res, next );
+      } );
     } );
   } );
 } );
