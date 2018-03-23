@@ -1,6 +1,6 @@
-const mbModel = require( '../../models/musicbrainzModel' );
+const mbDB = require( './musicbrainzDB' );
 
-describe( 'musicbrainzModel', () => {
+describe( 'musicbrainzDB', () => {
   let count = 0;
   const expected = { mb: 'one', ca: 'two' };
   const client = {
@@ -17,7 +17,7 @@ describe( 'musicbrainzModel', () => {
 
   describe( '.hget()', () => {
     it( 'should get the musicbrainz data from the hash', async () => {
-      const mbdata = await mbModel.hget( client, 'album', { mb: 'one' }, { ca: 'two' } );
+      const mbdata = await mbDB.hget( client, 'album', { mb: 'one' }, { ca: 'two' } );
       expect( mbdata ).to.eql( expected );
     } );
 
@@ -26,14 +26,14 @@ describe( 'musicbrainzModel', () => {
         callback( null, null );
       };
 
-      const mbdata = await mbModel.hget( client, 'album', { mb: 'one' }, { ca: 'two' } );
+      const mbdata = await mbDB.hget( client, 'album', { mb: 'one' }, { ca: 'two' } );
       expect( mbdata ).to.eql( null );
     } );
   } );
 
   describe( '.hset()', () => {
     it( 'should not get the musicbrainz data if it exists in the hash', () => {
-      mbModel.hset( client, 'album', {}, {} );
+      mbDB.hset( client, 'album', {}, {} );
       expect( count ).to.eql( 0 );
     } );
 
@@ -41,7 +41,7 @@ describe( 'musicbrainzModel', () => {
       client.hexists = ( hash, key, callback ) => {
         callback( null, 0 );
       };
-      mbModel.hset( client, 'album', {}, {} );
+      mbDB.hset( client, 'album', {}, {} );
       expect( count ).to.eql( 1 );
     } );
   } );

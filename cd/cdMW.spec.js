@@ -1,6 +1,6 @@
-const cdController = require( '../../controllers/cdController' );
+const cdMW = require( './cdMW' );
 
-describe( 'cdController', () => {
+describe( 'cdMW', () => {
   const artist = 'artist';
   const album = 'album';
   const cds = [ 'cd1', 'cd2' ];
@@ -19,7 +19,7 @@ describe( 'cdController', () => {
         } );
       };
 
-      cdController.renderCDs( req, res );
+      cdMW.renderCDs( req, res );
     } );
   } );
 } );

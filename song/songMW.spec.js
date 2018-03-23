@@ -1,6 +1,6 @@
-const songController = require( '../../controllers/songController' );
+const songMW = require( './songMW' );
 
-describe( 'songController', () => {
+describe( 'songMW', () => {
   const artist = 'artist';
   const album = 'album';
   const songs = [ 'song1', 'song2' ];
@@ -29,7 +29,7 @@ describe( 'songController', () => {
         expect( data ).to.eql( expected );
       };
 
-      songController.renderSongs( req, res );
+      songMW.renderSongs( req, res );
     } );
 
     it( 'should call render and pass the data if cd is there as well', () => {
@@ -41,7 +41,7 @@ describe( 'songController', () => {
         expect( data ).to.eql( expected );
       };
 
-      songController.renderSongs( req, res );
+      songMW.renderSongs( req, res );
     } );
   } );
 } );

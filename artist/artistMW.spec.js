@@ -1,8 +1,8 @@
 const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
-describe( 'artistController', () => {
-  const artistModelStub = {};
-  const artistController = proxyquire( '../../controllers/artistController', { '../models/artistModel.js': artistModelStub } );
+describe( 'artistMW', () => {
+  const artistDBStub = {};
+  const artistMW = proxyquire( './artistMW', { './artistDB': artistDBStub } );
 
   const artists = [ 'artist1', 'artist2' ];
   const artistNames = [ 'artistName1', 'artistName2' ];
@@ -16,26 +16,26 @@ describe( 'artistController', () => {
 
   describe( '.getArtists()', () => {
     it( 'should get all the artist names', () => {
-      artistModelStub.hgetall = () => artistNames;
+      artistDBStub.hgetall = () => artistNames;
 
       const next = () => {
         expect( res.locals.artistNames ).to.eql( artistNames );
       };
 
-      artistController.getArtists( req, res, next );
+      artistMW.getArtists( req, res, next );
     } );
   } );
 
   describe( '.getArtist()', () => {
     it( 'should get the artist name', () => {
       req.params.artist = 'artist';
-      artistModelStub.hget = () => 'artistName';
+      artistDBStub.hget = () => 'artistName';
 
       const next = () => {
         expect( res.locals.artistName ).to.eql( 'artistName' );
       };
 
-      artistController.getArtist( req, res, next );
+      artistMW.getArtist( req, res, next );
     } );
   } );
 
@@ -44,13 +44,13 @@ describe( 'artistController', () => {
       let count = 0;
       req.params.artist = 'artist';
       res.locals.musicbrainz.artist = 'mbartist';
-      artistModelStub.hset = () => count++;
+      artistDBStub.hset = () => count++;
 
       const next = () => {
         expect( count ).to.eql( 1 );
       };
 
-      artistController.setArtist( req, res, next );
+      artistMW.setArtist( req, res, next );
     } );
   } );
 
@@ -62,7 +62,7 @@ describe( 'artistController', () => {
         expect( data ).to.eql( { artists, artistNames } );
       };
 
-      artistController.renderArtists( req, res );
+      artistMW.renderArtists( req, res );
     } );
   } );
 } );

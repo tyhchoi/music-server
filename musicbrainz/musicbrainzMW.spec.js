@@ -1,8 +1,8 @@
 const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
-describe( 'musicbrainzController', () => {
-  const mbModelStub = {};
-  const mbController = proxyquire( '../../controllers/musicbrainzController', { '../models/musicbrainzModel.js': mbModelStub } );
+describe( 'musicbrainzMW', () => {
+  const mbDBStub = {};
+  const mbMW = proxyquire( './musicbrainzMW', { './musicbrainzDB': mbDBStub } );
 
   const req = { app: { locals: { client: {} } }, params: { album: 'album' } };
   const res = { locals: {} };
@@ -13,17 +13,17 @@ describe( 'musicbrainzController', () => {
 
   describe( '.getMusicbrainzData()', () => {
     it( 'should set gotData to false when null is returned', () => {
-      mbModelStub.hget = () => null;
+      mbDBStub.hget = () => null;
 
       const next = () => {
         expect( res.locals.gotData ).to.eql( false );
       };
 
-      mbController.getMusicbrainzData( req, res, next );
+      mbMW.getMusicbrainzData( req, res, next );
     } );
 
     it( 'should get the musicbrainz data', () => {
-      mbModelStub.hget = () => output;
+      mbDBStub.hget = () => output;
 
       const next = () => {
         expect( res.locals.musicbrainz ).to.eql( musicbrainz );
@@ -31,20 +31,20 @@ describe( 'musicbrainzController', () => {
         expect( res.locals.gotData ).to.eql( true );
       };
 
-      mbController.getMusicbrainzData( req, res, next );
+      mbMW.getMusicbrainzData( req, res, next );
     } );
   } );
 
   describe( '.setMusicbrainzData()', () => {
     it( 'should set the musicbrainz data', () => {
       let count = 0;
-      mbModelStub.hset = () => count++;
+      mbDBStub.hset = () => count++;
 
       const next = () => {
         expect( count ).to.eql( 1 );
       };
 
-      mbController.setMusicbrainzData( req, res, next );
+      mbMW.setMusicbrainzData( req, res, next );
     } );
   } );
 } );

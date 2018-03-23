@@ -1,6 +1,6 @@
-const artistModel = require( '../../models/artistModel' );
+const artistDB = require( './artistDB' );
 
-describe( 'artistModel', () => {
+describe( 'artistDB', () => {
   let count = 0;
   const client = {
     hgetall( hash, callback ) {
@@ -19,7 +19,7 @@ describe( 'artistModel', () => {
 
   describe( '.hgetall()', () => {
     it( 'should get all the artist names in the hash', async () => {
-      const artistNames = await artistModel.hgetall( client, [ 'artist1', 'artist2' ] );
+      const artistNames = await artistDB.hgetall( client, [ 'artist1', 'artist2' ] );
       expect( artistNames ).to.eql( [ 'artistName1', 'artistName2' ] );
     } );
 
@@ -28,14 +28,14 @@ describe( 'artistModel', () => {
         callback( null, { artist1: 'artistName1' } );
       };
 
-      const artistNames = await artistModel.hgetall( client, [ 'artist1', 'artist2' ] );
+      const artistNames = await artistDB.hgetall( client, [ 'artist1', 'artist2' ] );
       expect( artistNames ).to.eql( [ 'artistName1', 'artist2' ] );
     } );
   } );
 
   describe( '.hget()', () => {
     it( 'should get the artist name from the hash', async () => {
-      const artistName = await artistModel.hget( client, 'artist1' );
+      const artistName = await artistDB.hget( client, 'artist1' );
       expect( artistName ).to.eql( 'artistName1' );
     } );
 
@@ -44,14 +44,14 @@ describe( 'artistModel', () => {
         callback( null, null );
       };
 
-      const artistName = await artistModel.hget( client, 'artist1' );
+      const artistName = await artistDB.hget( client, 'artist1' );
       expect( artistName ).to.eql( 'artist1' );
     } );
   } );
 
   describe( '.hset()', () => {
     it( 'should not set the artist name if it exists in the hash', () => {
-      artistModel.hset( client, 'artist1' );
+      artistDB.hset( client, 'artist1' );
       expect( count ).to.eql( 0 );
     } );
 
@@ -59,7 +59,7 @@ describe( 'artistModel', () => {
       client.hexists = ( hash, key, callback ) => {
         callback( null, 0 );
       };
-      artistModel.hset( client, 'artist1' );
+      artistDB.hset( client, 'artist1' );
       expect( count ).to.eql( 1 );
     } );
   } );

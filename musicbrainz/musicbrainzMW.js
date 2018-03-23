@@ -1,10 +1,10 @@
-const mbModel = require( '../models/musicbrainzModel.js' );
+const mbDB = require( './musicbrainzDB' );
 
 exports.getMusicbrainzData = async ( req, res, next ) => {
   const { client } = req.app.locals;
   const { album } = req.params;
 
-  const mbdata = await mbModel.hget( client, album );
+  const mbdata = await mbDB.hget( client, album );
 
   if ( mbdata === null ) {
     res.locals.gotData = false;
@@ -34,7 +34,7 @@ exports.setMusicbrainzData = ( req, res, next ) => {
   const { album } = req.params;
   const { musicbrainz, coverart } = res.locals;
 
-  mbModel.hset( client, album, musicbrainz, coverart );
+  mbDB.hset( client, album, musicbrainz, coverart );
 
   next();
 };

@@ -1,8 +1,8 @@
 const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
-describe( 'albumController', () => {
-  const albumModelStub = {};
-  const albumController = proxyquire( '../../controllers/albumController', { '../models/albumModel.js': albumModelStub } );
+describe( 'albumMW', () => {
+  const albumDBStub = {};
+  const albumMW = proxyquire( './albumMW', { './albumDB': albumDBStub } );
 
   const albums = [ 'album1', 'album2' ];
   const albumNames = [ 'albumName1', 'albumName2' ];
@@ -14,13 +14,13 @@ describe( 'albumController', () => {
 
   describe( '.getAlbums()', () => {
     it( 'should get all the album names', () => {
-      albumModelStub.hgetall = () => albumNames;
+      albumDBStub.hgetall = () => albumNames;
 
       const next = () => {
         expect( res.locals.albumNames ).to.eql( albumNames );
       };
 
-      albumController.getAlbums( req, res, next );
+      albumMW.getAlbums( req, res, next );
     } );
   } );
 
@@ -29,13 +29,13 @@ describe( 'albumController', () => {
       let count = 0;
       req.params.album = 'album';
       res.locals.musicbrainz.album = 'mbalbum';
-      albumModelStub.hset = () => count++;
+      albumDBStub.hset = () => count++;
 
       const next = () => {
         expect( count ).to.eql( 1 );
       };
 
-      albumController.setAlbum( req, res, next );
+      albumMW.setAlbum( req, res, next );
     } );
   } );
 
@@ -53,7 +53,7 @@ describe( 'albumController', () => {
         } );
       };
 
-      albumController.renderAlbums( req, res );
+      albumMW.renderAlbums( req, res );
     } );
   } );
 } );
