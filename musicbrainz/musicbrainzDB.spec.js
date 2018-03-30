@@ -17,7 +17,7 @@ describe( 'musicbrainzDB', () => {
 
   describe( '.hget()', () => {
     it( 'should get the musicbrainz data from the hash', async () => {
-      const mbdata = await mbDB.hget( client, 'album', { mb: 'one' }, { ca: 'two' } );
+      const mbdata = await mbDB.hget( client, 'album', expected );
       expect( mbdata ).to.eql( expected );
     } );
 
@@ -26,7 +26,7 @@ describe( 'musicbrainzDB', () => {
         callback( null, null );
       };
 
-      const mbdata = await mbDB.hget( client, 'album', { mb: 'one' }, { ca: 'two' } );
+      const mbdata = await mbDB.hget( client, 'album', expected );
       expect( mbdata ).to.eql( null );
     } );
   } );
