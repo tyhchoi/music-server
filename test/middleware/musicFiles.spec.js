@@ -28,24 +28,6 @@ describe( 'musicFiles', () => {
     } );
   } );
 
-  describe( '.isCD()', () => {
-    it( 'should get the cds and call next', () => {
-      req.params = { artist: 'artist', album: 'album2' };
-      const next = () => {
-        expect( res.locals.cds ).to.eql( [ 'cd1', 'cd2' ] );
-      };
-      musicFiles.isCD( req, res, next );
-    } );
-
-    it( 'should call next when there are music files', () => {
-      req.params = { artist: 'artist', album: 'album1' };
-      const next = () => {
-        expect( res.locals ).to.eql( {} );
-      };
-      musicFiles.isCD( req, res, next );
-    } );
-  } );
-
   describe( '.getSongs()', () => {
     it( 'should get songs and call next', () => {
       req.params = { artist: 'artist', album: 'album1' };
@@ -58,7 +40,10 @@ describe( 'musicFiles', () => {
     it( 'should get songs from cd and call next', () => {
       req.params = { artist: 'artist', album: 'album2' };
       const next = () => {
-        expect( res.locals.songs ).to.eql( [ { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] } ] );
+        expect( res.locals.songs ).to.eql( [
+          { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] },
+          { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
+        ] );
       };
       musicFiles.getSongs( req, res, next );
     } );
