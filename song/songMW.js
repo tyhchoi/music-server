@@ -1,6 +1,6 @@
 exports.renderSongs = ( req, res ) => {
-  const { artist, album, cd } = req.params;
-  const { songs } = res.locals;
+  const { artist, album } = req.params;
+  const { songs, songNames } = res.locals;
 
   const mbartist = res.locals.musicbrainz.artist;
   const mbalbum = res.locals.musicbrainz.album;
@@ -9,11 +9,8 @@ exports.renderSongs = ( req, res ) => {
   const { image, contentType } = res.locals.coverart;
 
   const values = {
-    artist, album, songs, mbartist, mbalbum, date, image, contentType
+    artist, album, songs, songNames, mbartist, mbalbum, date, image, contentType
   };
 
-  if ( cd ) {
-    values.cd = cd;
-  }
   res.render( 'songs', values );
 };

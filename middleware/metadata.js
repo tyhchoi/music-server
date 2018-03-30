@@ -61,7 +61,7 @@ const commonAlbumName = array => {
     return array;
   }
 
-  const exclude = [ '(Disc', '(disc', '[Disc', '[disc', 'Disc', 'disc', '(CD', '(cd', '[CD', '[cd', 'CD', 'cd' ];
+  const exclude = [ '(Disc ', '(disc ', '[Disc ', '[disc ', 'Disc ', 'disc ', '(CD ', '(cd ', '[CD ', '[cd ', 'CD ', 'cd ' ];
 
   const piece = exclude.filter( ex => name.endsWith( ex ) );
 

@@ -24,20 +24,6 @@ router.get(
 );
 router.get(
   '/:artist/:album',
-  musicFiles.isCD,
-  cdMW.renderCDs,
-  musicFiles.getSongs,
-  mbMW.getMusicbrainzData,
-  metadata.getMetadata,
-  mbMW.getAlbumData,
-  mbMW.getCoverArt,
-  artistMW.setArtist,
-  albumMW.setAlbum,
-  mbMW.setMusicbrainzData,
-  songMW.renderSongs
-);
-router.get(
-  '/:artist/:album/:cd',
   musicFiles.getSongs,
   mbMW.getMusicbrainzData,
   metadata.getMetadata,
