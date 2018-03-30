@@ -3,7 +3,6 @@ const musicFiles = require( '../middleware/musicFiles' );
 const metadata = require( '../middleware/metadata' );
 const artistMW = require( '../artist/artistMW' );
 const albumMW = require( '../album/albumMW' );
-const cdMW = require( '../cd/cdMW' );
 const songMW = require( '../song/songMW' );
 const mbMW = require( '../musicbrainz/musicbrainzMW' );
 

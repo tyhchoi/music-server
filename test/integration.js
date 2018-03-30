@@ -42,16 +42,6 @@ describe( 'Integration test for routes', () => {
     } );
   } );
 
-  describe( 'GET /:artist/:album/:cd', () => {
-    it( 'should successfully get songs from cd1 of album2 by artist', done => {
-      request
-        .get( '/artist/album2/cd1' )
-        .expect( 'Content-Type', /html/ )
-        .expect( 200 )
-        .end( done );
-    } );
-  } );
-
   describe( 'Error Handling', () => {
     it( 'should show a 404 error', done => {
       request

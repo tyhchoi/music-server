@@ -128,7 +128,7 @@ describe( 'musicbrainzMW', () => {
     describe( '.getCoverArt()', () => {
       const req = {};
       const res = {
-        locals: { albumID: 'albumID' }
+        locals: { musicbrainz: { albumID: 'albumID' } }
       };
 
       beforeEach( () => {

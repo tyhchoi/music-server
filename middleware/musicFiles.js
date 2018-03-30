@@ -46,15 +46,6 @@ exports.getAlbums = ( req, res, next ) => {
   next();
 };
 
-exports.isCD = ( req, res, next ) => {
-  const { artist, album } = req.params;
-  const cds = readDir( musicDirectory, path.join( artist, album ) );
-  if ( cds.length > 0 ) {
-    res.locals.cds = cds;
-  }
-  next();
-};
-
 exports.getSongs = ( req, res, next ) => {
   const { artist, album } = req.params;
   res.locals.songs = readSongs( musicDirectory, path.join( artist, album ), fileType );
