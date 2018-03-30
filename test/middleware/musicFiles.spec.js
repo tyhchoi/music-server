@@ -50,15 +50,15 @@ describe( 'musicFiles', () => {
     it( 'should get songs and call next', () => {
       req.params = { artist: 'artist', album: 'album1' };
       const next = () => {
-        expect( res.locals.songs ).to.eql( [ 'file1.flac', 'file2.flac' ] );
+        expect( res.locals.songs ).to.eql( [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ] );
       };
       musicFiles.getSongs( req, res, next );
     } );
 
     it( 'should get songs from cd and call next', () => {
-      req.params = { artist: 'artist', album: 'album2', cd: 'cd1' };
+      req.params = { artist: 'artist', album: 'album2' };
       const next = () => {
-        expect( res.locals.songs ).to.eql( [ 'file1.flac', 'file2.flac' ] );
+        expect( res.locals.songs ).to.eql( [ { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] } ] );
       };
       musicFiles.getSongs( req, res, next );
     } );
