@@ -24,12 +24,14 @@ router.get(
 router.get(
   '/:artist/:album',
   musicFiles.getSongs,
+  songMW.getSongs,
   mbMW.getMusicbrainzData,
   metadata.getMetadata,
   mbMW.getAlbumData,
   mbMW.getCoverArt,
   artistMW.setArtist,
   albumMW.setAlbum,
+  songMW.setSongs,
   mbMW.setMusicbrainzData,
   songMW.renderSongs
 );
