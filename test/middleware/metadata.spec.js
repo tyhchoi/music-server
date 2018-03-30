@@ -6,20 +6,45 @@ describe( 'metadata', () => {
   const req = {
     params: { artist: 'artist', album: 'album' }
   };
-  const res = {};
+  const res = { locals: {} };
   const returned = {};
 
   beforeEach( () => {
-    returned.common = { artist: 'artist1', album: 'album1', date: 'date' };
-    res.locals = { songs: [ 'song' ] };
+    returned.common = {
+      artist: 'artist',
+      album: 'album',
+      date: 'date',
+      title: 'title',
+      musicbrainz_albumid: undefined
+    };
+    res.locals.metadata = undefined;
+    res.locals.songs = [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ];
+    res.locals.musicbrainz = undefined;
   } );
 
   describe( '.getMetadata()', () => {
-    it( 'should get the metadata of the file', () => {
+    it( 'should get the metadata of the album', () => {
       metadataStub.parseFile = () => Promise.resolve( returned );
 
       const next = () => {
-        expect( res.locals.metadata ).to.eql( { artist: 'artist1', album: 'album1', date: 'date' } );
+        expect( res.locals.songNames ).to.eql( [ [ 'title', 'title' ] ] );
+        expect( res.locals.metadata ).to.eql( { artist: 'artist', album: 'album', date: 'date' } );
+        expect( res.locals.musicbrainz ).to.eql( undefined );
+      };
+
+      metadata.getMetadata( req, res, next );
+    } );
+
+    it( 'should get the metadata of multi-cd albums', () => {
+      metadataStub.parseFile = () => Promise.resolve( returned );
+      res.locals.songs = [
+        { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] },
+        { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
+      ];
+
+      const next = () => {
+        expect( res.locals.songNames ).to.eql( [ [ 'title', 'title' ], [ 'title', 'title' ] ] );
+        expect( res.locals.metadata ).to.eql( { artist: 'artist', album: 'album', date: 'date' } );
         expect( res.locals.musicbrainz ).to.eql( undefined );
       };
 
@@ -29,10 +54,9 @@ describe( 'metadata', () => {
     it( 'should get the musicbrainz info when it is provided', () => {
       returned.common.musicbrainz_albumid = '1234';
 
-      metadataStub.parseFile = () => Promise.resolve( returned );
-
       const next = () => {
-        expect( res.locals.metadata ).to.eql( { artist: 'artist1', album: 'album1', date: 'date' } );
+        expect( res.locals.songNames ).to.eql( [ [ 'title', 'title' ] ] );
+        expect( res.locals.metadata ).to.eql( { artist: 'artist', album: 'album', date: 'date' } );
         expect( res.locals.musicbrainz ).to.eql( { albumID: '1234' } );
       };
 
