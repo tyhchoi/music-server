@@ -27,12 +27,12 @@ router.get(
   songMW.getSongs,
   mbMW.getMusicbrainzData,
   metadata.getMetadata,
+  songMW.setSongs,
   mbMW.getAlbumData,
   mbMW.getCoverArt,
+  mbMW.setMusicbrainzData,
   artistMW.setArtist,
   albumMW.setAlbum,
-  songMW.setSongs,
-  mbMW.setMusicbrainzData,
   songMW.renderSongs
 );
 

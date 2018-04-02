@@ -6,10 +6,17 @@ describe( 'songMW', () => {
 
   const artist = 'artist';
   const album = 'album';
+  const date = 'date';
+  const albumList = [ '' ];
   const songs = [ { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] } ];
   const songNames = [ [ 'title1', 'title2' ] ];
 
-  const musicbrainz = { artist: 'mbartist', album: 'mbalbum', date: 'date' };
+  const musicbrainz = {
+    artist,
+    album,
+    date,
+    albumList
+  };
   const coverart = { image: '1234', contentType: 'content' };
 
   const req = { app: { locals: { client: {} } }, params: { artist, album } };
@@ -18,11 +25,12 @@ describe( 'songMW', () => {
   const expected = {
     artist,
     album,
+    albumList,
     songs,
     songNames,
-    mbartist: musicbrainz.artist,
-    mbalbum: musicbrainz.album,
-    date: musicbrainz.date,
+    mbartist: artist,
+    mbalbum: album,
+    date,
     image: coverart.image,
     contentType: coverart.contentType
   };

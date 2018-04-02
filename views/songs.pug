@@ -18,17 +18,20 @@ block list
     source(src=`/${firstPath}/${firstSong}`)
 
   ul#playlist
+    li.cd #{albumList[0]}
     li.songlist.active
       a(href=`/${firstPath}/${firstSong}`) #{firstSongName}
     -
       songs[0].songs = songs[0].songs.splice(1)
       songNames[0] = songNames[0].splice(1)
+      albumList[0] = ''
 
-    each arr, index1 in songs
-      - const innerPath = arr.cd === null ? `music/${artist}/${album}` : `music/${artist}/${album}/${arr.cd}`
-      each song, index2 in arr.songs
+    each songObj, index1 in songs
+      li.cd #{albumList[index1]}
+      - const path = songObj.cd === null ? `music/${artist}/${album}` : `music/${artist}/${album}/${songObj.cd}`
+      each song, index2 in songObj.songs
         li.songlist
-          a(href=`/${innerPath}/${song}`) #{songNames[index1][index2]}
+          a(href=`/${path}/${song}`) #{songNames[index1][index2]}
 
   - const imageSrc = contentType === undefined ? image : `data:${contentType};base64,${image}`
   div #{date}

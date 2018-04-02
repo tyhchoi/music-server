@@ -40,3 +40,9 @@ a:hover {
 .links {
   color:#000;
 }
+
+.cd {
+  color: #000000;
+  padding:5px;
+  display:block;
+}
