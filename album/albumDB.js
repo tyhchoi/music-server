@@ -10,8 +10,7 @@ exports.hgetall = ( client, artist, albums ) => {
       }
 
       return album;
-    } ) )
-    .catch( err => err );
+    } ) );
 };
 
 exports.hset = ( client, artist, album, mbalbum ) => {

@@ -4,8 +4,7 @@ exports.hget = ( client, album ) => {
   const hget = promisify( client.hget ).bind( client );
 
   return hget( album, 'mbdata' )
-    .then( data => JSON.parse( data ) )
-    .catch( err => err );
+    .then( data => JSON.parse( data ) );
 };
 
 exports.hset = ( client, album, musicbrainz, coverart ) => {

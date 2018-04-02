@@ -5,10 +5,7 @@ exports.search = async ( nodebrainz, artist, album ) => {
 
   const returnedData = await search( 'release', { artist, release: album, status: 'Official' } )
     .then( data => data.releases[0] )
-    .catch( err => {
-      console.log( err );
-      return undefined;
-    } );
+    .catch( err => undefined );
 
   if ( returnedData !== undefined ) {
     return {

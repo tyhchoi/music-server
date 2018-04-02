@@ -10,8 +10,7 @@ exports.hgetall = ( client, artists ) => {
       }
 
       return artist;
-    } ) )
-    .catch( err => err );
+    } ) );
 };
 
 exports.hget = ( client, artist ) => {
@@ -24,8 +23,7 @@ exports.hget = ( client, artist ) => {
       }
 
       return data;
-    } )
-    .catch( err => err );
+    } );
 };
 
 exports.hset = ( client, artist, mbartist ) => {
