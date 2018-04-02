@@ -85,7 +85,18 @@ exports.getMetadata = async ( req, res, next ) => {
 
     const albumNames = metadata.map( obj => obj[0].album );
     const common = commonAlbumName( albumNames );
-    const albumList = albumNames.map( cd => cd.replace( common, '' ).trim() );
+    let albumList = albumNames.map( cd => cd.replace( common, '' ).trim() );
+
+    let count = 0;
+    if ( albumList.length !== 1 ) {
+      albumList = albumList.map( name => {
+        if ( name === '' ) {
+          count++;
+          return `(Disc 0${count})`;
+        }
+        return name;
+      } );
+    }
 
     res.locals.metadata = {
       artist: songObject.artist,
