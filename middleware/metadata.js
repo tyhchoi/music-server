@@ -58,12 +58,12 @@ const commonAlbumName = array => {
   }
 
   if ( name === '' ) {
-    return array;
+    return array.join( ' / ' );
   }
 
-  const exclude = [ '(Disc ', '(disc ', '[Disc ', '[disc ', 'Disc ', 'disc ', '(CD ', '(cd ', '[CD ', '[cd ', 'CD ', 'cd ' ];
+  const exclude = [ '(Disc', '(disc', '[Disc', '[disc', 'Disc', 'disc', '(CD', '(cd', '[CD', '[cd', 'CD', 'cd' ];
 
-  const piece = exclude.filter( ex => name.endsWith( ex ) );
+  const piece = exclude.filter( ex => name.endsWith( `${ex} ` ) );
 
   return name.replace( piece[0], '' ).trim();
 };
@@ -83,11 +83,14 @@ exports.getMetadata = async ( req, res, next ) => {
       next( songObject );
     }
 
-    const albumName = metadata.map( obj => obj[0].album );
+    const albumNames = metadata.map( obj => obj[0].album );
+    const common = commonAlbumName( albumNames );
+    const albumList = albumNames.map( cd => cd.replace( common, '' ).trim() );
 
     res.locals.metadata = {
       artist: songObject.artist,
-      album: commonAlbumName( albumName ),
+      album: common,
+      albumList,
       date: songObject.date
     };
 

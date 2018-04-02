@@ -9,6 +9,14 @@ describe( 'metadata', () => {
   const res = { locals: {} };
   const returned = {};
 
+  const expectedSongNames = [ 'title', 'title' ];
+  const expected = {
+    artist: 'artist',
+    album: 'album',
+    date: 'date',
+    albumList: [ '' ]
+  };
+
   beforeEach( () => {
     returned.common = {
       artist: 'artist',
@@ -27,24 +35,8 @@ describe( 'metadata', () => {
       metadataStub.parseFile = () => Promise.resolve( returned );
 
       const next = () => {
-        expect( res.locals.songNames ).to.eql( [ [ 'title', 'title' ] ] );
-        expect( res.locals.metadata ).to.eql( { artist: 'artist', album: 'album', date: 'date' } );
-        expect( res.locals.musicbrainz ).to.eql( undefined );
-      };
-
-      metadata.getMetadata( req, res, next );
-    } );
-
-    it( 'should get the metadata of multi-cd albums', () => {
-      metadataStub.parseFile = () => Promise.resolve( returned );
-      res.locals.songs = [
-        { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] },
-        { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
-      ];
-
-      const next = () => {
-        expect( res.locals.songNames ).to.eql( [ [ 'title', 'title' ], [ 'title', 'title' ] ] );
-        expect( res.locals.metadata ).to.eql( { artist: 'artist', album: 'album', date: 'date' } );
+        expect( res.locals.songNames ).to.eql( [ expectedSongNames ] );
+        expect( res.locals.metadata ).to.eql( expected );
         expect( res.locals.musicbrainz ).to.eql( undefined );
       };
 
@@ -55,9 +47,42 @@ describe( 'metadata', () => {
       returned.common.musicbrainz_albumid = '1234';
 
       const next = () => {
-        expect( res.locals.songNames ).to.eql( [ [ 'title', 'title' ] ] );
-        expect( res.locals.metadata ).to.eql( { artist: 'artist', album: 'album', date: 'date' } );
+        expect( res.locals.songNames ).to.eql( [ expectedSongNames ] );
+        expect( res.locals.metadata ).to.eql( expected );
         expect( res.locals.musicbrainz ).to.eql( { albumID: '1234' } );
+      };
+
+      metadata.getMetadata( req, res, next );
+    } );
+
+    it( 'should get the metadata of multi-cd albums', () => {
+      metadataStub.parseFile = song => {
+        if ( song.includes( 'cd1' ) ) {
+          const newReturned = {
+            common: {
+              artist: 'artist',
+              album: 'album (disc 1)',
+              date: 'date',
+              title: 'title',
+              musicbrainz_albumid: undefined
+            }
+          };
+          return Promise.resolve( newReturned );
+        }
+        returned.common.album = 'album (disc 2)';
+        return Promise.resolve( returned );
+      };
+      res.locals.songs = [
+        { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] },
+        { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
+      ];
+
+      const next = () => {
+        expected.albumList = [ '(disc 1)', '(disc 2)' ];
+
+        expect( res.locals.songNames ).to.eql( [ expectedSongNames, expectedSongNames ] );
+        expect( res.locals.metadata ).to.eql( expected );
+        expect( res.locals.musicbrainz ).to.eql( undefined );
       };
 
       metadata.getMetadata( req, res, next );
