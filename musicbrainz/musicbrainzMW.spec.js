@@ -8,7 +8,12 @@ describe( 'musicbrainzMW', () => {
     const req = { app: { locals: { client: {} } }, params: { album: 'album' } };
     const res = { locals: {} };
 
-    const musicbrainz = { artist: 'artist', album: 'album', date: 'date' };
+    const musicbrainz = {
+      artist: 'artist',
+      album: 'album',
+      date: 'date',
+      albumList: [ '' ]
+    };
     const coverart = { image: 'image' };
     const output = Object.assign( {}, musicbrainz, coverart );
 
@@ -81,7 +86,8 @@ describe( 'musicbrainzMW', () => {
           metadata: {
             artist: 'artist',
             album: 'album',
-            date: 'date'
+            date: 'date',
+            albumList: [ '' ]
           }
         }
       };

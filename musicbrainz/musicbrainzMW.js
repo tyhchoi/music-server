@@ -9,7 +9,7 @@ const ca = new CA( { userAgent } );
 
 exports.getAlbumData = async ( req, res, next ) => {
   if ( !res.locals.gotData ) {
-    const { artist, album } = res.locals.metadata;
+    const { artist, album, albumList } = res.locals.metadata;
     let returnedData = null;
 
     if ( res.locals.musicbrainz === undefined ) {
@@ -20,6 +20,7 @@ exports.getAlbumData = async ( req, res, next ) => {
       res.locals.musicbrainz = Object.assign( {}, res.locals.musicbrainz, res.locals.metadata );
     } else {
       res.locals.musicbrainz = returnedData;
+      res.locals.musicbrainz.albumList = albumList;
     }
   }
 
@@ -54,7 +55,8 @@ exports.getMusicbrainzData = async ( req, res, next ) => {
     res.locals.musicbrainz = {
       artist: mbdata.artist,
       album: mbdata.album,
-      date: mbdata.date
+      date: mbdata.date,
+      albumList: mbdata.albumList
     };
 
     res.locals.coverart = {
