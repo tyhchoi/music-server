@@ -5,6 +5,8 @@ $( document ).ready( () => {
   let playlistIndex = 0;
   let playlistTrack = playlist.find( 'a' )[playlistIndex];
 
+  $( playlistTrack ).parent().addClass( 'active' );
+
   const playTrack = ( track, player ) => {
     const nowPlaying = $( 'h3' );
     nowPlaying[0].innerText = `Now Playing - ${track[0].innerText}`;

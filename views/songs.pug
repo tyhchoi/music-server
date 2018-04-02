@@ -18,14 +18,6 @@ block list
     source(src=`/${firstPath}/${firstSong}`)
 
   ul#playlist
-    li.cd #{albumList[0]}
-    li.songlist.active
-      a(href=`/${firstPath}/${firstSong}`) #{firstSongName}
-    -
-      songs[0].songs = songs[0].songs.splice(1)
-      songNames[0] = songNames[0].splice(1)
-      albumList[0] = ''
-
     each songObj, index1 in songs
       li.cd #{albumList[index1]}
       - const path = songObj.cd === null ? `music/${artist}/${album}` : `music/${artist}/${album}/${songObj.cd}`
