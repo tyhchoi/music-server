@@ -14,10 +14,12 @@ exports.getAlbumData = async ( req, res, next ) => {
 
     if ( res.locals.musicbrainz === undefined ) {
       returnedData = await mbAPI.search( nb, artist, album );
+    } else {
+      returnedData = await mbAPI.search( nb, artist, album, res.locals.musicbrainz.albumID );
     }
 
     if ( returnedData === null ) {
-      res.locals.musicbrainz = Object.assign( {}, res.locals.musicbrainz, res.locals.metadata );
+      res.locals.musicbrainz = res.locals.metadata;
     } else {
       res.locals.musicbrainz = returnedData;
       res.locals.musicbrainz.albumList = albumList;
@@ -36,7 +38,7 @@ exports.getCoverArt = async ( req, res, next ) => {
     };
 
     if ( albumID !== undefined ) {
-      res.locals.coverart = await mbAPI.release( ca, albumID );
+      res.locals.coverart = await mbAPI.releaseGroup( ca, albumID );
     }
   }
 

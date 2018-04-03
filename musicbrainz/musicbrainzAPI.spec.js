@@ -8,7 +8,7 @@ describe( 'musicbrainzAPI', () => {
       releases: [ {
         'artist-credit': [ { artist: { name: 'artist' } } ],
         date: 'date',
-        id: 'albumID',
+        'release-group': { id: 'albumID' },
         title: 'album'
       } ]
     };
@@ -16,18 +16,27 @@ describe( 'musicbrainzAPI', () => {
     const nb = {
       search( string, obj, callback ) {
         callback( null, returned );
+      },
+      release( string, obj, callback ) {
+        callback( null, returned.releases[0] );
       }
     };
 
-    it( 'should return the musicbrainz data', async () => {
-      const expected = {
-        artist: 'artist',
-        album: 'album',
-        albumID: 'albumID',
-        date: 'date'
-      };
+    const expected = {
+      artist: 'artist',
+      album: 'album',
+      albumID: 'albumID',
+      date: 'date'
+    };
 
+    it( 'should return the musicbrainz data', async () => {
       const output = await mbAPI.search( nb, artist, album );
+
+      expect( output ).to.eql( expected );
+    } );
+
+    it( 'should return the musicbrainz data when albumID is provided', async () => {
+      const output = await mbAPI.search( nb, artist, album, 'albumID' );
 
       expect( output ).to.eql( expected );
     } );
@@ -62,7 +71,7 @@ describe( 'musicbrainzAPI', () => {
     };
 
     const ca = {
-      release( string, obj, callback ) {
+      releaseGroup( string, obj, callback ) {
         callback( null, returned );
       }
     };
@@ -73,17 +82,17 @@ describe( 'musicbrainzAPI', () => {
         contentType: 'contentType'
       };
 
-      const output = await mbAPI.release( ca, albumID );
+      const output = await mbAPI.releaseGroup( ca, albumID );
 
       expect( output ).to.eql( expected );
     } );
 
     it( 'should use the default image if coverart was not returned', async () => {
-      ca.release = ( string, obj, callback ) => {
+      ca.releaseGroup = ( string, obj, callback ) => {
         callback( { statusCode: 404 }, null );
       };
 
-      const output = await mbAPI.release( ca, albumID );
+      const output = await mbAPI.releaseGroup( ca, albumID );
 
       expect( output ).to.eql( { image: '/images/default.png' } );
     } );

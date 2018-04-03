@@ -72,7 +72,7 @@ describe( 'musicbrainzMW', () => {
       search() {
         return nbExpected;
       },
-      release() {
+      releaseGroup() {
         return caExpected;
       }
     };
@@ -104,7 +104,7 @@ describe( 'musicbrainzMW', () => {
         mbMW.getAlbumData( req, res, next );
       } );
 
-      it( 'should skip the search if musicbrainz id already exists', () => {
+      it( 'should return the musicbrainz data when albumID exists', () => {
         res.locals.musicbrainz = { albumID: 'albumID' };
 
         const next = () => {
