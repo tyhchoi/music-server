@@ -5,7 +5,8 @@ block append head
 
 block list
   h2 #{mbalbum}
-  h4 by #{mbartist}
+  h4 by
+    a.links(href=`/${artist}`)  #{mbartist}
 
   -
     const firstSong = songs[0].songs[0]
