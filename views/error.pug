@@ -1,5 +1,8 @@
 extends layout
 
+block append head
+  title ERROR #{code}
+
 block list
   h2 ERROR #{code}
   div #{file} does not exist

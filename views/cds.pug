@@ -1,8 +1,0 @@
-extends layout
-
-block list
-  h2 #{album}
-  ul
-    each cd in cds
-      li
-        a(href=`/${artist}/${album}/${cd}`) #{cd}
