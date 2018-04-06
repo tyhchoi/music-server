@@ -1,8 +1,8 @@
 const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
 describe( 'metadataMW', () => {
-  const metadataStub = {};
-  const metadata = proxyquire( './metadataMW', { 'music-metadata': metadataStub } );
+  const metadataMWStub = {};
+  const metadataMW = proxyquire( './metadataMW', { 'music-metadata': metadataMWStub } );
   const req = {
     params: { artist: 'artist', album: 'album' }
   };
@@ -32,7 +32,7 @@ describe( 'metadataMW', () => {
 
   describe( '.getMetadata()', () => {
     it( 'should get the metadata of the album', () => {
-      metadataStub.parseFile = () => Promise.resolve( returned );
+      metadataMWStub.parseFile = () => Promise.resolve( returned );
 
       const next = () => {
         expect( res.locals.songNames ).to.eql( [ expectedSongNames ] );
@@ -40,7 +40,7 @@ describe( 'metadataMW', () => {
         expect( res.locals.musicbrainz ).to.eql( undefined );
       };
 
-      metadata.getMetadata( req, res, next );
+      metadataMW.getMetadata( req, res, next );
     } );
 
     it( 'should get the musicbrainz info when it is provided', () => {
@@ -52,11 +52,11 @@ describe( 'metadataMW', () => {
         expect( res.locals.musicbrainz ).to.eql( { albumID: '1234' } );
       };
 
-      metadata.getMetadata( req, res, next );
+      metadataMW.getMetadata( req, res, next );
     } );
 
     it( 'should get the metadata of multi-cd albums', () => {
-      metadataStub.parseFile = song => {
+      metadataMWStub.parseFile = song => {
         if ( song.includes( 'cd1' ) ) {
           const newReturned = {
             common: {
@@ -85,11 +85,11 @@ describe( 'metadataMW', () => {
         expect( res.locals.musicbrainz ).to.eql( undefined );
       };
 
-      metadata.getMetadata( req, res, next );
+      metadataMW.getMetadata( req, res, next );
     } );
 
     it( 'should return an error when there is an error', () => {
-      metadataStub.parseFile = () => Promise.reject( new Error( 'Parsing Error' ) );
+      metadataMWStub.parseFile = () => Promise.reject( new Error( 'Parsing Error' ) );
 
       const next = err => {
         expect( err.message ).to.eql( 'Parsing Error' );
@@ -97,7 +97,7 @@ describe( 'metadataMW', () => {
         expect( res.locals.musicbrainz ).to.eql( undefined );
       };
 
-      metadata.getMetadata( req, res, next );
+      metadataMW.getMetadata( req, res, next );
     } );
   } );
 } );
