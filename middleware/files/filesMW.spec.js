@@ -22,7 +22,7 @@ describe( 'filesMW', () => {
     it( 'should get the albums and call next', () => {
       req.params = { artist: 'artist' };
       const next = () => {
-        expect( res.locals.albums ).to.eql( [ 'album1', 'album2' ] );
+        expect( res.locals.albums ).to.eql( [ 'album1', 'album2', 'album3' ] );
       };
       filesMW.getAlbums( req, res, next );
     } );

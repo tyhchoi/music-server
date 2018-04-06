@@ -4,7 +4,10 @@ const path = require( 'path' );
 const readDir = ( mainDirectory, subDirectory = '' ) => {
   const joinedPath = path.join( mainDirectory, subDirectory );
   const files = fs.readdirSync( joinedPath );
-  return files.filter( file => fs.lstatSync( path.join( joinedPath, file ) ).isDirectory() );
+  return files.filter( file => {
+    const fstat = fs.lstatSync( path.join( joinedPath, file ) );
+    return fstat.isDirectory() || fstat.isSymbolicLink();
+  } );
 };
 
 const readSongs = ( mainDirectory, subDirectory, ext ) => {
