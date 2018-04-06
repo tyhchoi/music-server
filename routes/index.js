@@ -1,5 +1,5 @@
 const express = require( 'express' );
-const musicFiles = require( '../middleware/musicFiles' );
+const filesMW = require( '../middleware/files/filesMW' );
 const metadataMW = require( '../middleware/metadata/metadataMW' );
 const artistMW = require( '../artist/artistMW' );
 const albumMW = require( '../album/albumMW' );
@@ -10,20 +10,20 @@ const router = express.Router();
 
 router.get(
   '/',
-  musicFiles.getArtists,
+  filesMW.getArtists,
   artistMW.getArtists,
   artistMW.renderArtists
 );
 router.get(
   '/:artist',
-  musicFiles.getAlbums,
+  filesMW.getAlbums,
   artistMW.getArtist,
   albumMW.getAlbums,
   albumMW.renderAlbums
 );
 router.get(
   '/:artist/:album',
-  musicFiles.getSongs,
+  filesMW.getSongs,
   songMW.getSongs,
   mbMW.getMusicbrainzData,
   metadataMW.getMetadata,

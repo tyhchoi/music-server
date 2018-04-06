@@ -1,6 +1,6 @@
-const musicFiles = require( '../../middleware/musicFiles' );
+const filesMW = require( './filesMW' );
 
-describe( 'musicFiles', () => {
+describe( 'filesMW', () => {
   const req = {};
   const res = {};
 
@@ -14,7 +14,7 @@ describe( 'musicFiles', () => {
       const next = () => {
         expect( res.locals.artists ).to.eql( [ 'artist' ] );
       };
-      musicFiles.getArtists( req, res, next );
+      filesMW.getArtists( req, res, next );
     } );
   } );
 
@@ -24,7 +24,7 @@ describe( 'musicFiles', () => {
       const next = () => {
         expect( res.locals.albums ).to.eql( [ 'album1', 'album2' ] );
       };
-      musicFiles.getAlbums( req, res, next );
+      filesMW.getAlbums( req, res, next );
     } );
   } );
 
@@ -34,7 +34,7 @@ describe( 'musicFiles', () => {
       const next = () => {
         expect( res.locals.songs ).to.eql( [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ] );
       };
-      musicFiles.getSongs( req, res, next );
+      filesMW.getSongs( req, res, next );
     } );
 
     it( 'should get songs from cd and call next', () => {
@@ -45,7 +45,7 @@ describe( 'musicFiles', () => {
           { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
         ] );
       };
-      musicFiles.getSongs( req, res, next );
+      filesMW.getSongs( req, res, next );
     } );
   } );
 } );
