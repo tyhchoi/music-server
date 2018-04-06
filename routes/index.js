@@ -4,7 +4,7 @@ const metadataMW = require( '../middleware/metadata/metadataMW' );
 const artistMW = require( '../artist/artistMW' );
 const albumMW = require( '../album/albumMW' );
 const songMW = require( '../song/songMW' );
-const mbMW = require( '../musicbrainz/musicbrainzMW' );
+const mbMW = require( '../middleware/musicbrainz/musicbrainzMW' );
 
 const router = express.Router();
 
