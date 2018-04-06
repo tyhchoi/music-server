@@ -1,8 +1,8 @@
 const proxyquire = require( 'proxyquire' ).noPreserveCache();
 
-describe( 'metadata', () => {
+describe( 'metadataMW', () => {
   const metadataStub = {};
-  const metadata = proxyquire( '../../middleware/metadata', { 'music-metadata': metadataStub } );
+  const metadata = proxyquire( './metadataMW', { 'music-metadata': metadataStub } );
   const req = {
     params: { artist: 'artist', album: 'album' }
   };
