@@ -1,7 +1,7 @@
 const express = require( 'express' );
 const path = require( 'path' );
 const routes = require( './routes/index' );
-const errorHandler = require( './middleware/errorHandler' );
+const errorHandlerMW = require( './middleware/errorHandler/errorHandlerMW' );
 const redis = require( 'redis' );
 
 const app = express();
@@ -22,6 +22,6 @@ app.use( express.static( path.join( __dirname, 'public' ) ) );
 
 app.use( '/', routes );
 
-app.use( errorHandler );
+app.use( errorHandlerMW );
 
 module.exports = app;

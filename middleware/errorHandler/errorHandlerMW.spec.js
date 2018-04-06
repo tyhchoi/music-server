@@ -1,6 +1,6 @@
-const handleError = require( '../../middleware/errorHandler' );
+const handleError = require( './errorHandlerMW' );
 
-describe( 'errorHandler', () => {
+describe( 'errorHandlerMW', () => {
   describe( 'ENOENT error code', () => {
     it( 'should render the error view and pass the data when there is an error', () => {
       const err = {
