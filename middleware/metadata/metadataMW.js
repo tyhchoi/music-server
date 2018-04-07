@@ -80,7 +80,7 @@ exports.getMetadata = async ( req, res, next ) => {
     const songObject = metadata[0][0];
 
     if ( songObject.message !== undefined ) {
-      next( songObject );
+      return next( songObject );
     }
 
     const albumNames = metadata.map( obj => obj[0].album );
