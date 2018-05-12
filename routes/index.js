@@ -12,14 +12,14 @@ router.get(
   '/',
   filesMW.getArtists,
   artistMW.getArtists,
-  artistMW.renderArtists
+  artistMW.jsonArtists
 );
 router.get(
   '/:artist',
   filesMW.getAlbums,
   artistMW.getArtist,
   albumMW.getAlbums,
-  albumMW.renderAlbums
+  albumMW.jsonAlbums
 );
 router.get(
   '/:artist/:album',
@@ -33,7 +33,7 @@ router.get(
   mbMW.setMusicbrainzData,
   artistMW.setArtist,
   albumMW.setAlbum,
-  songMW.renderSongs
+  songMW.jsonSongs
 );
 
 module.exports = router;

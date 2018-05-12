@@ -20,7 +20,7 @@ const musicDirectory = process.env.NODE_ENV === 'test' ? 'test/fixtures' : proce
 app.use( '/music', express.static( musicDirectory ) );
 app.use( express.static( path.join( __dirname, 'public' ) ) );
 
-app.use( '/', routes );
+app.use( '/api', routes );
 
 app.use( errorHandlerMW );
 
