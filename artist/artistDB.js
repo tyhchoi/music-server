@@ -1,35 +1,36 @@
 const { promisify } = require( 'util' );
 
-exports.hgetall = ( client, artists ) => {
+exports.hgetall = ( client, artistLinks ) => {
   const hgetall = promisify( client.hgetall ).bind( client );
 
   return hgetall( 'artists' )
-    .then( data => artists.map( artist => {
-      if ( data !== null && data[artist] !== undefined ) {
-        return data[artist];
+    .then( data => artistLinks.map( artistLink => {
+      const artistName = data[artistLink];
+      if ( data !== null && artistName !== undefined ) {
+        return artistName;
       }
 
-      return artist;
+      return artistLink;
     } ) );
 };
 
-exports.hget = ( client, artist ) => {
+exports.hget = ( client, artistLink ) => {
   const hget = promisify( client.hget ).bind( client );
 
-  return hget( 'artists', artist )
-    .then( data => {
-      if ( data === null ) {
-        return artist;
+  return hget( 'artists', artistLink )
+    .then( artistName => {
+      if ( artistName === null ) {
+        return artistLink;
       }
 
-      return data;
+      return artistName;
     } );
 };
 
-exports.hset = ( client, artist, mbartist ) => {
-  client.hexists( 'artists', artist, ( err, data ) => {
+exports.hset = ( client, artistLink, artistName ) => {
+  client.hexists( 'artists', artistLink, ( err, data ) => {
     if ( data === 0 ) {
-      client.hset( 'artists', artist, mbartist );
+      client.hset( 'artists', artistLink, artistName );
     }
   } );
 };
