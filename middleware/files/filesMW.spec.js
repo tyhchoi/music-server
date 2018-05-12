@@ -22,7 +22,7 @@ describe( 'filesMW', () => {
     it( 'should get the albums and call next', () => {
       req.params = { artist: 'artist' };
       const next = () => {
-        expect( res.locals.albums ).to.eql( [ 'album1', 'album2', 'album3' ] );
+        expect( res.locals.albumLinks ).to.eql( [ 'album1', 'album2', 'album3' ] );
       };
       filesMW.getAlbums( req, res, next );
     } );
@@ -32,7 +32,7 @@ describe( 'filesMW', () => {
     it( 'should get songs and call next', () => {
       req.params = { artist: 'artist', album: 'album1' };
       const next = () => {
-        expect( res.locals.songs ).to.eql( [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ] );
+        expect( res.locals.songLinks ).to.eql( [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ] );
       };
       filesMW.getSongs( req, res, next );
     } );
@@ -40,7 +40,7 @@ describe( 'filesMW', () => {
     it( 'should get songs from cd and call next', () => {
       req.params = { artist: 'artist', album: 'album2' };
       const next = () => {
-        expect( res.locals.songs ).to.eql( [
+        expect( res.locals.songLinks ).to.eql( [
           { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] },
           { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
         ] );

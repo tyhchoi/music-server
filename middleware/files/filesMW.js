@@ -4,6 +4,7 @@ const path = require( 'path' );
 const readDir = ( mainDirectory, subDirectory = '' ) => {
   const joinedPath = path.join( mainDirectory, subDirectory );
   const files = fs.readdirSync( joinedPath );
+
   return files.filter( file => {
     const fstat = fs.lstatSync( path.join( joinedPath, file ) );
     return fstat.isDirectory() || fstat.isSymbolicLink();
@@ -37,20 +38,18 @@ const musicDirectory = process.env.NODE_ENV === 'test' ? 'test/fixtures' : proce
 const fileType = process.env.NODE_ENV === 'test' ? '.flac' : process.env.FILE_TYPE;
 
 exports.getArtists = ( req, res, next ) => {
-  const artistLinks = readDir( musicDirectory );
-  res.locals.artistLinks = artistLinks;
+  res.locals.artistLinks = readDir( musicDirectory );
   next();
 };
 
 exports.getAlbums = ( req, res, next ) => {
   const { artist } = req.params;
-  const albums = readDir( musicDirectory, artist );
-  res.locals.albums = albums;
+  res.locals.albumLinks = readDir( musicDirectory, artist );
   next();
 };
 
 exports.getSongs = ( req, res, next ) => {
   const { artist, album } = req.params;
-  res.locals.songs = readSongs( musicDirectory, path.join( artist, album ), fileType );
+  res.locals.songLinks = readSongs( musicDirectory, path.join( artist, album ), fileType );
   next();
 };
