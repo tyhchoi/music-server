@@ -4,20 +4,18 @@ describe( 'albumMW', () => {
   const albumDBStub = {};
   const albumMW = proxyquire( './albumMW', { './albumDB': albumDBStub } );
 
-  const albums = [ 'album1', 'album2' ];
-  const albumNames = [ 'albumName1', 'albumName2' ];
-  const artist = 'artist';
-  const artistName = 'artistName';
+  const albums = [ { albumLink: 'album1', albumName: 'albumName1' }, { albumLink: 'album2', albumName: 'albumName2' } ];
+  const artist = { artistLink: 'artist', artistName: 'artistName' };
 
   const req = { app: { locals: { client: {} } }, params: { artist } };
-  const res = { locals: { albums, musicbrainz: {} } };
+  const res = { locals: { artist, albumLinks: [ 'album1', 'album2' ], musicbrainz: {} } };
 
   describe( '.getAlbums()', () => {
     it( 'should get all the album names', () => {
-      albumDBStub.hgetall = () => albumNames;
+      albumDBStub.hgetall = () => [ 'albumName1', 'albumName2' ];
 
       const next = () => {
-        expect( res.locals.albumNames ).to.eql( albumNames );
+        expect( res.locals.albums ).to.eql( albums );
       };
 
       albumMW.getAlbums( req, res, next );
@@ -28,7 +26,7 @@ describe( 'albumMW', () => {
     it( 'should set the album name', () => {
       let count = 0;
       req.params.album = 'album';
-      res.locals.musicbrainz.album = 'mbalbum';
+      res.locals.musicbrainz.album = 'albumName';
       albumDBStub.hset = () => count++;
 
       const next = () => {
@@ -39,21 +37,16 @@ describe( 'albumMW', () => {
     } );
   } );
 
-  describe( '.renderAlbums()', () => {
-    it( 'should call render and pass the data', () => {
-      res.locals.albumNames = albumNames;
-      res.locals.artistName = artistName;
-      res.render = ( view, data ) => {
-        expect( view ).to.eql( 'albums' );
+  describe( '.jsonAlbums()', () => {
+    it( 'should send a json object of the data', () => {
+      res.json = data => {
         expect( data ).to.eql( {
           artist,
-          albums,
-          albumNames,
-          artistName
+          albums
         } );
       };
 
-      albumMW.renderAlbums( req, res );
+      albumMW.jsonAlbums( req, res );
     } );
   } );
 } );

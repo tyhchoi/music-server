@@ -1,22 +1,22 @@
 const { promisify } = require( 'util' );
 
-exports.hgetall = ( client, artist, albums ) => {
+exports.hgetall = ( client, artistLink, albumLinks ) => {
   const hgetall = promisify( client.hgetall ).bind( client );
 
-  return hgetall( artist )
-    .then( data => albums.map( album => {
-      if ( data !== null && data[album] !== undefined ) {
-        return data[album];
+  return hgetall( artistLink )
+    .then( data => albumLinks.map( albumLink => {
+      if ( data !== null && data[albumLink] !== undefined ) {
+        return data[albumLink];
       }
 
-      return album;
+      return albumLink;
     } ) );
 };
 
-exports.hset = ( client, artist, album, mbalbum ) => {
-  client.hexists( artist, album, ( err, data ) => {
+exports.hset = ( client, artistLink, albumLink, albumName ) => {
+  client.hexists( artistLink, albumLink, ( err, data ) => {
     if ( data === 0 ) {
-      client.hset( artist, album, mbalbum );
+      client.hset( artistLink, albumLink, albumName );
     }
   } );
 };

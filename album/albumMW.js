@@ -3,9 +3,10 @@ const albumDB = require( './albumDB' );
 exports.getAlbums = async ( req, res, next ) => {
   const { client } = req.app.locals;
   const { artist } = req.params;
-  const { albums } = res.locals;
+  const { albumLinks } = res.locals;
 
-  res.locals.albumNames = await albumDB.hgetall( client, artist, albums );
+  const albumNames = await albumDB.hgetall( client, artist, albumLinks );
+  res.locals.albums = albumLinks.map( ( albumLink, i ) => ( { albumLink, albumName: albumNames[i] } ) );
 
   next();
 };
@@ -13,20 +14,17 @@ exports.getAlbums = async ( req, res, next ) => {
 exports.setAlbum = ( req, res, next ) => {
   const { client } = req.app.locals;
   const { artist, album } = req.params;
-  const mbalbum = res.locals.musicbrainz.album;
+  const albumName = res.locals.musicbrainz.album;
 
-  albumDB.hset( client, artist, album, mbalbum );
+  albumDB.hset( client, artist, album, albumName );
 
   next();
 };
 
-exports.renderAlbums = ( req, res ) => {
-  const { artist } = req.params;
-  const { albums, albumNames, artistName } = res.locals;
-  res.render( 'albums', {
+exports.jsonAlbums = ( req, res ) => {
+  const { artist, albums } = res.locals;
+  res.json( {
     artist,
-    albums,
-    albumNames,
-    artistName
+    albums
   } );
 };
