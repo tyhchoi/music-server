@@ -12,7 +12,7 @@ describe( 'filesMW', () => {
   describe( '.getArtists()', () => {
     it( 'should get the artists and call next', () => {
       const next = () => {
-        expect( res.locals.artists ).to.eql( [ 'artist' ] );
+        expect( res.locals.artistLinks ).to.eql( [ 'artist' ] );
       };
       filesMW.getArtists( req, res, next );
     } );

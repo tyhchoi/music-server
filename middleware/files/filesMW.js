@@ -37,8 +37,8 @@ const musicDirectory = process.env.NODE_ENV === 'test' ? 'test/fixtures' : proce
 const fileType = process.env.NODE_ENV === 'test' ? '.flac' : process.env.FILE_TYPE;
 
 exports.getArtists = ( req, res, next ) => {
-  const artists = readDir( musicDirectory );
-  res.locals.artists = artists;
+  const artistLinks = readDir( musicDirectory );
+  res.locals.artistLinks = artistLinks;
   next();
 };
 

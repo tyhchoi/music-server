@@ -2,18 +2,22 @@ const artistDB = require( './artistDB' );
 
 exports.getArtists = async ( req, res, next ) => {
   const { client } = req.app.locals;
-  const { artists } = res.locals;
+  const { artistLinks } = res.locals;
 
-  res.locals.artistNames = await artistDB.hgetall( client, artists );
+  const artistNames = await artistDB.hgetall( client, artistLinks );
+
+  res.locals.artists = artistLinks.map( ( artistLink, i ) => ( { artistLink, artistName: artistNames[i] } ) );
 
   next();
 };
 
 exports.getArtist = async ( req, res, next ) => {
   const { client } = req.app.locals;
-  const { artist } = req.params;
+  const { artistLink } = req.params;
 
-  res.locals.artistName = await artistDB.hget( client, artist );
+  const artistName = await artistDB.hget( client, artistLink );
+
+  res.locals.artist = { artistLink, artistName };
 
   next();
 };
@@ -28,7 +32,7 @@ exports.setArtist = ( req, res, next ) => {
   next();
 };
 
-exports.renderArtists = ( req, res ) => {
-  const { artists, artistNames } = res.locals;
-  res.render( 'artists', { artists, artistNames } );
+exports.jsonArtists = ( req, res ) => {
+  const { artists } = res.locals;
+  res.json( { artists } );
 };

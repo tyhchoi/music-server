@@ -4,14 +4,15 @@ describe( 'artistMW', () => {
   const artistDBStub = {};
   const artistMW = proxyquire( './artistMW', { './artistDB': artistDBStub } );
 
-  const artists = [ 'artist1', 'artist2' ];
+  const artistLinks = [ 'artist1', 'artist2' ];
   const artistNames = [ 'artistName1', 'artistName2' ];
+  const artists = [ { artistLink: 'artist1', artistName: 'artistName1' }, { artistLink: 'artist2', artistName: 'artistName2' } ];
 
   const req = { app: { locals: { client: {} } }, params: {} };
-  const res = { locals: { artists, musicbrainz: {} } };
+  const res = { locals: { artistLinks, musicbrainz: {} } };
 
   beforeEach( () => {
-    res.locals.artistNames = undefined;
+    res.locals.artists = undefined;
   } );
 
   describe( '.getArtists()', () => {
@@ -19,7 +20,7 @@ describe( 'artistMW', () => {
       artistDBStub.hgetall = () => artistNames;
 
       const next = () => {
-        expect( res.locals.artistNames ).to.eql( artistNames );
+        expect( res.locals.artists ).to.eql( artists );
       };
 
       artistMW.getArtists( req, res, next );
@@ -28,11 +29,11 @@ describe( 'artistMW', () => {
 
   describe( '.getArtist()', () => {
     it( 'should get the artist name', () => {
-      req.params.artist = 'artist';
+      req.params.artistLink = 'artist';
       artistDBStub.hget = () => 'artistName';
 
       const next = () => {
-        expect( res.locals.artistName ).to.eql( 'artistName' );
+        expect( res.locals.artist ).to.eql( { artistLink: 'artist', artistName: 'artistName' } );
       };
 
       artistMW.getArtist( req, res, next );
@@ -54,15 +55,14 @@ describe( 'artistMW', () => {
     } );
   } );
 
-  describe( '.renderArtists()', () => {
-    it( 'should call render and pass the data', () => {
-      res.locals.artistNames = artistNames;
-      res.render = ( view, data ) => {
-        expect( view ).to.eql( 'artists' );
-        expect( data ).to.eql( { artists, artistNames } );
+  describe( '.jsonArtists()', () => {
+    it( 'should send a json object of the data', () => {
+      res.locals.artists = artists;
+      res.json = data => {
+        expect( data ).to.eql( { artists } );
       };
 
-      artistMW.renderArtists( req, res );
+      artistMW.jsonArtists( req, res );
     } );
   } );
 } );
