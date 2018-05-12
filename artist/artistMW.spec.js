@@ -4,12 +4,10 @@ describe( 'artistMW', () => {
   const artistDBStub = {};
   const artistMW = proxyquire( './artistMW', { './artistDB': artistDBStub } );
 
-  const artistLinks = [ 'artist1', 'artist2' ];
-  const artistNames = [ 'artistName1', 'artistName2' ];
   const artists = [ { artistLink: 'artist1', artistName: 'artistName1' }, { artistLink: 'artist2', artistName: 'artistName2' } ];
 
   const req = { app: { locals: { client: {} } }, params: {} };
-  const res = { locals: { artistLinks, musicbrainz: {} } };
+  const res = { locals: { artistLinks: [ 'artist1', 'artist2' ], musicbrainz: {} } };
 
   beforeEach( () => {
     res.locals.artists = undefined;
@@ -17,7 +15,7 @@ describe( 'artistMW', () => {
 
   describe( '.getArtists()', () => {
     it( 'should get all the artist names', () => {
-      artistDBStub.hgetall = () => artistNames;
+      artistDBStub.hgetall = () => [ 'artistName1', 'artistName2' ];
 
       const next = () => {
         expect( res.locals.artists ).to.eql( artists );
@@ -29,7 +27,7 @@ describe( 'artistMW', () => {
 
   describe( '.getArtist()', () => {
     it( 'should get the artist name', () => {
-      req.params.artistLink = 'artist';
+      req.params.artist = 'artist';
       artistDBStub.hget = () => 'artistName';
 
       const next = () => {

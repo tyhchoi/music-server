@@ -13,11 +13,11 @@ exports.getArtists = async ( req, res, next ) => {
 
 exports.getArtist = async ( req, res, next ) => {
   const { client } = req.app.locals;
-  const { artistLink } = req.params;
+  const { artist } = req.params;
 
-  const artistName = await artistDB.hget( client, artistLink );
+  const artistName = await artistDB.hget( client, artist );
 
-  res.locals.artist = { artistLink, artistName };
+  res.locals.artist = { artistLink: artist, artistName };
 
   next();
 };
@@ -25,9 +25,9 @@ exports.getArtist = async ( req, res, next ) => {
 exports.setArtist = ( req, res, next ) => {
   const { client } = req.app.locals;
   const { artist } = req.params;
-  const mbartist = res.locals.musicbrainz.artist;
+  const artistName = res.locals.musicbrainz.artist;
 
-  artistDB.hset( client, artist, mbartist );
+  artistDB.hset( client, artist, artistName );
 
   next();
 };

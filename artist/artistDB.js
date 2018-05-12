@@ -5,9 +5,8 @@ exports.hgetall = ( client, artistLinks ) => {
 
   return hgetall( 'artists' )
     .then( data => artistLinks.map( artistLink => {
-      const artistName = data[artistLink];
-      if ( data !== null && artistName !== undefined ) {
-        return artistName;
+      if ( data !== null && data[artistLink] !== undefined ) {
+        return data[artistLink];
       }
 
       return artistLink;
