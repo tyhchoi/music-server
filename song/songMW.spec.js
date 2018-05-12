@@ -8,8 +8,24 @@ describe( 'songMW', () => {
   const album = 'album';
   const date = 'date';
   const albumList = [ '' ];
-  const songs = [ { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] } ];
+  const songLinks = [ { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] } ];
   const songNames = [ [ 'title1', 'title2' ] ];
+
+  const songs = [
+    {
+      cd: 'cd1',
+      songs: [
+        {
+          songLink: 'file1.flac',
+          songName: 'title1'
+        },
+        {
+          songLink: 'file2.flac',
+          songName: 'title2'
+        }
+      ]
+    }
+  ];
 
   const musicbrainz = {
     artist,
@@ -25,14 +41,9 @@ describe( 'songMW', () => {
   const expected = {
     artist,
     album,
-    albumList,
     songs,
-    songNames,
-    mbartist: artist,
-    mbalbum: album,
-    date,
-    image: coverart.image,
-    contentType: coverart.contentType
+    musicbrainz,
+    coverart
   };
 
   describe( '.getSongs()', () => {
@@ -60,20 +71,19 @@ describe( 'songMW', () => {
     } );
   } );
 
-  describe( '.renderSongs()', () => {
-    it( 'should call render and pass the data', () => {
+  describe( '.jsonSongs()', () => {
+    it( 'should send a json object of the data', () => {
       res.locals = {
-        songs,
+        songLinks,
         songNames,
         musicbrainz,
         coverart
       };
-      res.render = ( view, data ) => {
-        expect( view ).to.eql( 'songs' );
+      res.json = data => {
         expect( data ).to.eql( expected );
       };
 
-      songMW.renderSongs( req, res );
+      songMW.jsonSongs( req, res );
     } );
   } );
 } );

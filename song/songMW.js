@@ -19,19 +19,21 @@ exports.setSongs = ( req, res, next ) => {
   next();
 };
 
-exports.renderSongs = ( req, res ) => {
+exports.jsonSongs = ( req, res ) => {
   const { artist, album } = req.params;
-  const { songs, songNames } = res.locals;
+  const {
+    songLinks, songNames, musicbrainz, coverart
+  } = res.locals;
 
-  const mbartist = res.locals.musicbrainz.artist;
-  const mbalbum = res.locals.musicbrainz.album;
-  const { date, albumList } = res.locals.musicbrainz;
+  const songs = songLinks.map( ( cd, i ) => {
+    const songLinksZ = cd.songs.map( ( songLink, j ) => ( { songLink, songName: songNames[i][j] } ) );
 
-  const { image, contentType } = res.locals.coverart;
+    return { cd: cd.cd, songs: songLinksZ };
+  } );
 
   const values = {
-    artist, album, albumList, songs, songNames, mbartist, mbalbum, date, image, contentType
+    artist, album, songs, musicbrainz, coverart
   };
 
-  res.render( 'songs', values );
+  res.json( values );
 };
