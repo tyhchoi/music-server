@@ -73,9 +73,9 @@ exports.getMetadata = async ( req, res, next ) => {
     const musicDirectory = process.env.NODE_ENV === 'test' ? 'test/fixtures' : process.env.MUSIC_DIRECTORY;
 
     const { artist, album } = req.params;
-    const { songs } = res.locals;
+    const { songLinks } = res.locals;
 
-    const metadata = await parseAlbum( songs, path.join( musicDirectory, artist, album ) );
+    const metadata = await parseAlbum( songLinks, path.join( musicDirectory, artist, album ) );
 
     const songObject = metadata[0][0];
 

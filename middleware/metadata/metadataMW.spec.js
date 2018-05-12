@@ -26,7 +26,7 @@ describe( 'metadataMW', () => {
       musicbrainz_albumid: undefined
     };
     res.locals.metadata = undefined;
-    res.locals.songs = [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ];
+    res.locals.songLinks = [ { cd: null, songs: [ 'file1.flac', 'file2.flac' ] } ];
     res.locals.musicbrainz = undefined;
   } );
 
@@ -72,7 +72,7 @@ describe( 'metadataMW', () => {
         returned.common.album = 'album (disc 2)';
         return Promise.resolve( returned );
       };
-      res.locals.songs = [
+      res.locals.songLinks = [
         { cd: 'cd1', songs: [ 'file1.flac', 'file2.flac' ] },
         { cd: 'cd2', songs: [ 'file1.flac', 'file2.flac' ] }
       ];
